@@ -5,6 +5,7 @@
     "command": "input=$(cat); dir=$(pwd | sed \"s|$HOME|~|\"); git_branch=$(git branch --show-current 2>/dev/null); git_dirty=$(git status --porcelain 2>/dev/null | head -1); git_info=\"\"; [ -n \"$git_branch\" ] && git_info=\"$git_branch\" && [ -n \"$git_dirty\" ] && git_info=\"$git_info*\"; model=$(echo \"$input\" | jq -r '.model.display_name // \"unknown\"'); case \"$model\" in *Opus*) emoji=\"🔥\";; *Sonnet*) emoji=\"🚀\";; *Haiku*) emoji=\"🛸\";; *) emoji=\"✨\";; esac; echo \"$dir ${git_info:+($git_info) }| $emoji $model\""
   },
   "enabledPlugins": {
-    "ralph-loop@claude-plugins-official": true
+    "ralph-loop@claude-plugins-official": true,
+    "oh-my-claude-sisyphus@oh-my-claude-sisyphus": false
   }
 }
