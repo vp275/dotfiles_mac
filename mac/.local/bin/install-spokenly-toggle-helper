@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+source_dir="$HOME/.local/libexec/spokenly-toggle"
+app_dir="$HOME/Applications/Spokenly Toggle.app"
+contents_dir="$app_dir/Contents"
+executable_dir="$contents_dir/MacOS"
+executable_path="$executable_dir/SpokenlyToggle"
+launch_services_register="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+
+mkdir -p "$executable_dir"
+cp "$source_dir/Info.plist" "$contents_dir/Info.plist"
+swiftc -parse-as-library -O -framework AppKit \
+  "$source_dir/main.swift" \
+  -o "$executable_path"
+codesign --force --sign - "$app_dir"
+"$launch_services_register" -f "$app_dir"
+
+plutil -lint "$contents_dir/Info.plist"
+codesign --verify --strict "$app_dir"
+echo "Installed $app_dir"

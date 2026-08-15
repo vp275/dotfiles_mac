@@ -1,11 +1,11 @@
-# Logitech Options+ and Wispr Flow Setup
+# Logitech Options+ and Transcription Setup
 
-Last audited: 2026-07-18
+Last audited: 2026-08-01
 
 ## Goal
 
-Keep the MX Master 3S wheel/back buttons predictable across Codex, AI apps,
-terminals, browsers, and Wispr Flow.
+Keep the MX Master 3S controls predictable across Codex, AI apps, terminals,
+browsers, Wispr Flow, and Spokenly.
 
 The important split:
 
@@ -54,31 +54,31 @@ Useful slots:
 | `mx-master-3s-2b034_c82` | Wheel click / middle button | `Enter` in terminal-like apps and Codex, `MB3` in browsers. |
 | `mx-master-3s-2b034_c83` | Back button | Native Back in browsers/default; `Ctrl+Tab` in Codex. |
 | `mx-master-3s-2b034_c86` | Forward button | Native Forward in browsers/default; `Cmd+K` in Codex. |
-| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Right Option in Desktop/default, Codex, and Ghostty for Wispr hands-free. Previously used as raw aux for Wispr. |
+| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Provider-specific dictation action in every current Logitech profile. For Spokenly, the Smart Action opens a background helper that calls `spokenly://toggle`. |
 | `mx-master-3s-2b034_c196` | Gesture/top button | App navigation gesture card. |
 
 ## Current Logitech Profile Benchmark
 
 ### Full Profile Snapshot
 
-Generated from the live Logitech Options+ database on 2026-07-18.
+Generated from the live Logitech Options+ database and rechecked on 2026-08-02.
 
 | App/profile | Bundle id | Thumb button `c195` | Wheel click `c82` | Back `c83` | Forward `c86` |
 | --- | --- | --- | --- | --- | --- |
-| Desktop/default | global fallback | Right Option / `Opt ->` | Real middle click: `MB3` | Native Back | Native Forward |
-| Codex | `com.openai.codex` | Right Option / `Opt ->` | `Enter` | `Ctrl+Tab` | `Cmd+K` |
-| Claude | `com.anthropic.claudefordesktop` | Empty shortcut / no action | `Enter` | Native Back | Native Forward |
-| Warp | `dev.warp.Warp-Stable` | Empty shortcut / no action | `Enter` | Native Back | Native Forward |
-| Ghostty | `com.mitchellh.ghostty` | Right Option / `Opt ->` | `Enter` | Native Back | Native Forward |
-| Safari | `com.apple.Safari` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |
-| Google Chrome | `com.google.Chrome` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |
-| Brave Browser | `com.brave.Browser` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |
-| Firefox | `org.mozilla.firefox` | Empty shortcut / no action | Real middle click: `MB3` | Native Back | Native Forward |
-| Helium | `net.imput.helium` | `Cmd+\`` | Real middle click: `MB3` | Native Back | Native Forward |
+| Desktop/default | global fallback | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
+| Codex | `com.openai.codex` | Smart Action `Spokenly Hands-Free` | `Enter` | `Ctrl+Tab` | `Cmd+K` |
+| Claude | `com.anthropic.claudefordesktop` | Smart Action `Spokenly Hands-Free` | `Enter` | Native Back | Native Forward |
+| Warp | `dev.warp.Warp-Stable` | Smart Action `Spokenly Hands-Free` | `Enter` | Native Back | Native Forward |
+| Ghostty | `com.mitchellh.ghostty` | Smart Action `Spokenly Hands-Free` | `Enter` | Native Back | Native Forward |
+| Safari | `com.apple.Safari` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
+| Google Chrome | `com.google.Chrome` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
+| Brave Browser | `com.brave.Browser` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
+| Firefox | `org.mozilla.firefox` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
+| Helium | `net.imput.helium` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
+| Sioyek | `info.sioyek.sioyek` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Right Arrow | Left Arrow |
 
-Important inheritance detail: Desktop/default applies only to apps without a
-custom Logitech profile. Existing custom profiles with an explicit empty thumb
-assignment do not inherit the Desktop/default right Option thumb behavior.
+`trx` assigns the provider-specific thumb action directly in every Logitech
+profile listed by the live database. This avoids profile inheritance gaps.
 
 ### Wheel Click
 
@@ -122,37 +122,85 @@ Profiles currently matching that browser/default shape:
 - Warp
 - Ghostty
 
-Desktop/default also sets the thumb button (`c195`) to right Option
-(`code: 230`, displayed by Logi as `Opt ->`) so Wispr hands-free works in
-apps that do not have their own customized Logi profile.
+Every current profile sets the thumb button (`c195`) to a macro reference for the
+Logitech Smart Action `Spokenly Hands-Free`, ID
+`d18fe790-d754-4fbc-8e82-0e5df78bda9e`. The Smart Action opens the background
+helper at `~/Applications/Spokenly Toggle.app`; the helper calls Spokenly's
+documented `spokenly://toggle` deeplink.
 
 Codex currently has a custom four-button layout:
 
 | Slot | Current Codex assignment |
 | --- | --- |
-| `c195` | Right Option key (`code: 230`, displayed by Logi as `Opt ->`); Wispr maps right Option (`61`) to hands-free |
+| `c195` | Smart Action `Spokenly Hands-Free`; opens `Spokenly Toggle.app`, then `spokenly://toggle` |
 | `c82` | `Enter` / `Return` |
 | `c83` | `Ctrl+Tab` (`code: 43`, modifiers `[224]`) |
 | `c86` | `Cmd+K` (`code: 14`, modifiers `[227]`) |
 
 Treat Codex side buttons separately from browser side buttons.
 
+### Codex Thumb Wheel And Sidebar Toggle
+
+The Logitech Options+ application profile is displayed as `ChatGPT`, but it
+targets the Codex application:
+
+```text
+Application: /Applications/ChatGPT.app
+Bundle ID: com.openai.codex
+```
+
+The current known-good assignments are:
+
+| Physical control | Assignment |
+| --- | --- |
+| Forward button | `Cmd+K` (`code: 14`, modifiers `[227]`) |
+| Thumb wheel up | `Ctrl+B` (`code: 5`, modifiers `[224]`) |
+| Thumb wheel down | `Cmd+Delete` (`code: 42`, modifiers `[227]`) |
+
+The thumb-wheel-up shortcut is consumed by a Codex-specific BetterTouchTool
+keyboard trigger. BTT then runs:
+
+```text
+~/Library/Application Support/BetterTouchTool/CustomScripts/codex-sidebar-toggle-debounced
+```
+
+That wrapper toggles the Codex sidebar between `By project` and `In one list`
+through the compiled `codex-sidebar-toggle` helper. It suppresses repeated
+invocations for `1.5` seconds because one physical thumb-wheel movement can
+produce multiple `Ctrl+B` events. Before the debounce wrapper was added, the
+sidebar could toggle twice and finish in its original state, which looked like
+the shortcut had not run.
+
+The Logitech settings database was backed up before repairing these
+assignments:
+
+```text
+~/Library/Application Support/LogiOptionsPlus/settings.db.backup-codex-20260728
+```
+
+See the related BTT guide for trigger details and troubleshooting:
+
+[Codex sidebar organization shortcut](btt/README.md#codex-sidebar-organization-shortcut)
+
 ## Current Wispr Flow Shortcut Benchmark
 
-Wispr shortcuts currently relevant to this setup:
+Wispr shortcuts currently relevant to this setup are shown below. The complete
+effective list, with built-in and custom entries classified separately, lives
+in the [Wispr Flow input profile](transcription/wispr-flow/README.md).
 
-| Shortcut code | Wispr action |
-| --- | --- |
-| `61` | `popo` / hands-free; right Option key |
-| `4099` | `popo` / hands-free; Mouse 4 side button, legacy fallback while testing back button behavior |
-| `4100` | `popo` / hands-free; Mouse 5 side button, legacy fallback while testing back button behavior |
-| `63` | `ptt` |
+| Shortcut code | Wispr action | Origin |
+| --- | --- | --- |
+| `61` | `popo` / hands-free; right Option key | Custom |
+| `63` | `ptt` | Built-in default |
 
 Important absence:
 
 - `4098 => enter_rebind` is intentionally removed.
-- `65535 => popo` is intentionally removed after moving hands-free off the
-  aux/thumb button.
+- `4099 => popo` and `4100 => popo` are intentionally removed; the legacy raw
+  Mouse 4 and Mouse 5 fallbacks are no longer needed.
+- `65535 => popo` is intentionally removed. The Logitech aux/thumb button is
+  now provider-specific and currently routes to Spokenly through a Logitech
+  Smart Action.
 - Physical middle click should not be globally bound in Wispr.
 
 Why: when Wispr globally owns physical middle click, browser middle-click stops
@@ -165,9 +213,14 @@ documented separately:
 
 [BetterTouchTool gesture setup](btt/README.md)
 
+The provider-specific input mapping and implemented `trx` switch contract are
+documented here:
+
+[Wispr Flow transcription input profile](transcription/wispr-flow/README.md)
+
 ## Lessons Learned
 
-### Do Not Use Logitech-Generated Chords For Wispr Hotkeys
+### Do Not Use Logitech-Generated Chords As BTT Transcription Triggers
 
 We tried mapping wheel click in Codex to a weird keyboard chord and then making
 Wispr listen for that chord. It did not reliably trigger Wispr.
@@ -176,14 +229,22 @@ Better pattern:
 
 - If the target app needs "send", set Logi wheel click directly to `Enter`.
 - If the target app needs browser behavior, keep Logi wheel click as `MB3`.
-- If Codex needs Wispr hands-free from a side button, set Logi to emit right
-  Option directly. Wispr already treats right Option (`61`) as `popo`.
+- For Wispr Flow, make the transcription thumb button emit Right Option
+  directly. Wispr treats Right Option (`61`) as `popo`. Run `trx wispr` to
+  install that assignment in every current Logitech profile. Run
+  `trx spokenly` to restore the `Spokenly Hands-Free` Smart Action in those
+  profiles.
+- Do not claim that a Logitech-generated F20, Hyper chord, `Ctrl+Shift+B`, or
+  modified mouse click can be routed through BTT from `c195`. None reached BTT
+  during physical testing.
+- Do not claim that BTT-generated Right Option is Spokenly-compatible. Spokenly
+  ignored both BTT's generic keyboard action and its dedicated modifier action.
 
 ### Codex Focus Problem
 
 Historical note: this was the earlier layout before the later Codex button
 swaps. The current Codex profile now uses wheel click (`c82`) for `Enter`,
-thumb (`c195`) for Wispr hands-free, back (`c83`) for `Ctrl+Tab`, and
+thumb (`c195`) for the current Spokenly Smart Action, back (`c83`) for `Ctrl+Tab`, and
 forward (`c86`) for `Cmd+K`.
 
 Original bug:

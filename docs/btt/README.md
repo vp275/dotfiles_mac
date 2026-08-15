@@ -1,45 +1,53 @@
 # BetterTouchTool Gesture Setup
 
-Last audited: 2026-07-09
+Last audited: 2026-08-01
 
 ## Goal
 
-Keep BetterTouchTool gestures predictable across the MacBook trackpad and any
-future Magic Mouse experiments, without disturbing the MX Master 3S setup in
-Logitech Options+.
+Keep BetterTouchTool inputs predictable across the MacBook trackpad and Magic
+Mouse. Logitech Options+ remains the owner of the MX Master 3S.
 
-The current known-good setup uses BTT for MacBook trackpad gestures:
+The current setup uses BTT for MacBook trackpad gestures and keyboard adapters:
 
+- Triple F4 locks the screen through BTT's native Lock Screen action.
 - 3-finger swipe right opens BTT's native Application Switcher.
 - 3-finger swipe left sends `Cmd+Delete`.
-- 3-finger tap triggers Wispr Flow hands-free through right Option.
+- 3-finger tap opens the background `Spokenly Toggle.app` helper, which calls
+  `spokenly://toggle` for hands-free dictation.
 - 4-finger tap sends `Return`.
 - In Codex only, 2-finger swipe right opens the chat switcher list with one
   `Ctrl+Tab` hold window. Lifting the final trackpad finger clicks the currently
   hovered chat and releases Control.
-- Magic Mouse TipTap Left (1 Finger Fix) triggers Wispr Flow hands-free through
-  right Option.
+- In Codex only, `Ctrl+B` toggles the sidebar organization between `By project`
+  and `In one list`.
+- The MX Master Spokenly trigger is owned entirely by Logitech Options+ and a
+  background helper. BTT is not in that input path.
+- Magic Mouse TipTap Left (1 Finger Fix) opens the background
+  `Spokenly Toggle.app` helper for hands-free dictation.
 - Magic Mouse 1-finger tap performs a standard left click.
 - Magic Mouse 1-finger tap right performs a standard right click.
 - Magic Mouse 2-finger swipe right opens BTT's native Application Switcher.
 - Magic Mouse 3-finger tap performs a standard middle click globally.
 - In Codex only, Magic Mouse 3-finger tap sends `Return`.
 - 3-finger click is disabled and reserved for future use.
-- Ducky One 2 F4 and F8 are handled outside BTT by
+- Ducky One 2 F4 passes through to BTT. F8 is handled outside BTT by
   `~/.local/bin/ducky-f8-aerospace-listener`, which calls
-  `~/.local/bin/protonvpn-app-toggle` for F4 and
-  `~/.local/bin/aerospace-toggle-enabled` for F8. The AeroSpace toggle prefers
+  `~/.local/bin/aerospace-toggle-enabled`. The AeroSpace toggle prefers
   `~/Applications/AeroSpace Sticky.app` and keeps the released app as rollback.
-  A LaunchAgent keeps the listener running; BTT is no longer the owner of this
-  path.
+  A LaunchAgent keeps the F8 listener running.
 - MacBook built-in F4 is first remapped from Apple's Spotlight/Search HID usage
-  to normal F4 by `~/.local/bin/macbook-f4-proton-key`, then handled by the same
-  listener. The remap is scoped to the built-in Apple keyboard so it does not
-  overwrite Ducky media-key mappings.
+  to normal F4 by `~/.local/bin/macbook-f4-proton-key`, then recognized by BTT.
+  The remap is scoped to the built-in Apple keyboard so it does not overwrite
+  Ducky media-key mappings. The helper retains its legacy filename even though
+  F4 no longer controls Proton VPN.
 
 Related Logitech/Wispr docs live here:
 
 [Logitech Options+ and Wispr Flow setup](../logitech-options-wispr-flow.md)
+
+[Wispr Flow transcription input profile](../transcription/wispr-flow/README.md)
+
+[Spokenly transcription input profile](../transcription/spokenly/README.md)
 
 ## Source of Truth
 
@@ -52,7 +60,7 @@ BetterTouchTool is installed at:
 Current BTT database:
 
 ```text
-~/Library/Application Support/BetterTouchTool/btt_data_store.version_6_609_build_2026062603
+~/Library/Application Support/BetterTouchTool/btt_data_store.version_6_687_build_2026073101
 ```
 
 Preferences plist:
@@ -77,7 +85,7 @@ Current global trackpad gestures:
 | --- | --- | --- |
 | 3-finger swipe right | `101` | `46` / Application Switcher |
 | 3-finger swipe left | `100` | `55,51` / Cmd+Delete, delete to beginning of line |
-| 3-finger tap | `104` | `61` / right Option, triggers Wispr hands-free |
+| 3-finger tap | `104` | `49` / launch `~/Applications/Spokenly Toggle.app` |
 | 4-finger tap | `110` | `36` / Return, sends Enter |
 
 Current BTT UUIDs:
@@ -96,6 +104,65 @@ Disabled / reserved BTT triggers:
 | --- | --- | --- | --- | --- |
 | 3-finger click | `112` | `36` / Return | `44022E95-1E33-48C6-BAC4-D7838FFBD70A` | Disabled; reserved for future use |
 
+## Triple F4 Lock
+
+The global key-sequence trigger
+`1603FFF1-E362-4179-A64A-F08074D9FDE5` recognizes three complete F4 presses,
+six ordered key-down and key-up events, with at most `0.35` seconds between
+events. The key-sequence trigger itself runs BTT action `158` / Lock Screen.
+
+The key sequence is recognized on all connected keyboards. The MacBook
+built-in F4 Search key is normalized to ordinary F4 by
+`~/.local/bin/macbook-f4-proton-key`. The Ducky already emits ordinary F4.
+Single and double F4 presses no longer toggle Proton VPN and do not run a BTT
+action.
+
+## Trackpad Spokenly Adapter
+
+The global trackpad 3-finger tap is owned by BTT trigger
+`CA4B9E78-76FB-4764-9301-A9937EE84D12`. Its only assigned action is launch
+application action `49`, child action UUID
+`B676F40D-4709-4F32-BB12-271827448EAB`, targeting
+`~/Applications/Spokenly Toggle.app`.
+
+```text
+Trackpad 3-finger tap
+  -> BetterTouchTool
+  -> ~/Applications/Spokenly Toggle.app
+  -> spokenly://toggle
+  -> Spokenly hands-free toggle
+```
+
+In the current Spokenly state, the trigger-level `61` / Right Option shortcut
+is absent because Spokenly rejects that synthetic modifier event. `trx wispr`
+replaces this trigger with the Right Option form that Wispr accepts, and
+`trx spokenly` restores the helper action. The UUID, global scope, and Default
+preset remain stable in both forms.
+
+## MX Master Spokenly Adapter
+
+BTT is not used for the live MX Master Spokenly adapter. Logitech Options+
+owns the physical button and runs its Device-triggered Smart Action
+`Spokenly Hands-Free`. That action opens `~/Applications/Spokenly Toggle.app`,
+which calls `spokenly://toggle` without synthesizing a key event.
+
+### Removed Adapter Experiments
+
+The former global F20 trigger
+`1F6581F7-5158-4562-96BC-4651E63C893D` was removed on 2026-08-01. BTT did not
+receive the F20 or Hyper chord emitted by Logitech Options+. A second test
+mapped the Logitech thumb button to a modified middle-click and enabled BTT's
+high-level mouse recognition, but BTT still did not record the input while
+Logitech Options+ owned the mouse.
+
+BTT's generic keyboard action and dedicated modifier action both emitted
+synthetic Right Option events, but Spokenly ignored them. The blank normal
+mouse test trigger was moved to BTT's recoverable Trash. High-level mouse
+recognition and BTT's command-line socket were returned to their disabled
+state after testing. The later `Ctrl+Shift+B` trigger
+`00E52375-157C-4380-8CD7-B7CF310F18EC` was also removed after the physical
+thumb-button event failed to reach BTT.
+
 ## App-Specific Gestures
 
 Current app-specific gestures:
@@ -103,15 +170,16 @@ Current app-specific gestures:
 | App | Bundle ID | Gesture | BTT trigger type | BTT action / shortcut | UUID |
 | --- | --- | --- | --- | --- | --- |
 | Codex | `com.openai.codex` | 2-finger swipe right | `160` | `137` / terminal command, lift to select | `B3FE5023-2A6D-4A7B-908D-2DB2815F700D` |
+| Codex | `com.openai.codex` | `Ctrl+B` | `0` | `137` / terminal command, toggle sidebar organization | `0879D751-4B2D-44EB-8610-F4F6F136BA27` |
 | Codex | `com.openai.codex` | Magic Mouse 3-finger tap | `9` | `36` / Return, sends Enter | `C7595FBE-FF9E-402C-84A6-915C1EFB0D4E` |
 
 Current BTT automation triggers:
 
 | Trigger | BTT trigger type | Action | UUID |
 | --- | --- | --- | --- |
-| None | - | - | - |
+| Triple F4 | `624` / key sequence | `158` / Lock Screen | `1603FFF1-E362-4179-A64A-F08074D9FDE5` |
 
-The Ducky F4/F8 listener is owned by the LaunchAgent
+The Ducky F8 listener is owned by the LaunchAgent
 `~/Library/LaunchAgents/com.vp.ducky-f8-aerospace-listener.plist`, not BTT.
 
 The Codex trigger runs this helper:
@@ -184,6 +252,108 @@ defaults read com.hegenberg.BetterTouchTool tpTwoFingerSwipeSensitivity
 
 Current value: `0.05`.
 
+### Codex Sidebar Organization Shortcut
+
+`Ctrl+B` toggles the Codex sidebar between these organization modes:
+
+- `By project`
+- `In one list`
+
+The trigger is scoped to Codex through bundle ID `com.openai.codex`, so it does
+not replace `Ctrl+B` in other applications. In text fields that follow standard
+macOS and Emacs-style navigation, the original `Ctrl+B` behavior moves the
+cursor backward by one character.
+
+The BTT trigger runs this debounce wrapper:
+
+```text
+~/Library/Application Support/BetterTouchTool/CustomScripts/codex-sidebar-toggle-debounced
+```
+
+The wrapper calls the compiled helper:
+
+```text
+~/Library/Application Support/BetterTouchTool/CustomScripts/codex-sidebar-toggle
+```
+
+The compiled helper uses the macOS Accessibility API to find the visible Codex
+sidebar options control. It opens the menu, detects the active organization
+mode by its checkmark, and clicks the other mode. It can fall back from `Chat
+sidebar options` to `Project sidebar options` when the main chat options
+control is not visible.
+
+The debounce wrapper creates this temporary lock directory:
+
+```text
+/tmp/com.vp.btt-codex-sidebar-toggle.lock
+```
+
+It keeps the lock for `1.5` seconds after invoking the compiled helper.
+Logitech Options+ can emit the same keyboard shortcut more than once for a
+single thumb-wheel movement. Without the lock, one movement can toggle to the
+other sidebar mode and immediately toggle back, making the shortcut appear not
+to work.
+
+The working trigger uses BTT action `137` (`Execute Terminal Command`, async).
+Action `206` (`Shell Script Task`) did not execute correctly for this shortcut
+and was the cause of the initial failure.
+
+No Codex or BTT restart is normally required after changing the trigger. BTT
+must be running and retain Accessibility permission.
+
+The matching Logitech Options+ Codex profile is named `ChatGPT` and targets
+bundle ID `com.openai.codex`. Its relevant assignments are:
+
+| Physical control | Logitech assignment | Result |
+| --- | --- | --- |
+| Thumb wheel up | `Ctrl+B` | Runs the BTT sidebar toggle |
+| Thumb wheel down | `Cmd+Delete` | Deletes to the beginning of the line |
+| Forward button | `Cmd+K` | Opens Codex search |
+
+When testing the sidebar toggle, focus Codex and use one short thumb-wheel-up
+movement. If the sidebar does not visibly change, check BTT Usage Statistics
+for the `Ctrl+B` trigger. An increasing action count confirms that Logitech is
+reaching BTT; multiple increments from one movement point to duplicate input
+and should be absorbed by the debounce wrapper.
+
+#### 2026-07-30 Detached Action Incident
+
+After BetterTouchTool updated to `6.682`, `Ctrl+B` still reached its enabled
+Codex trigger, but the trigger no longer ran a command. BTT Usage Statistics
+continued to increase because they count the trigger activation even when the
+trigger has no attached action.
+
+The before-and-after BTT databases showed the failure:
+
+- The `6.663` database contained trigger record `96` with an action child that
+  ran `codex-sidebar-toggle-debounced`.
+- The migrated `6.682` database retained trigger record `96` and its stable
+  UUID `0879D751-4B2D-44EB-8610-F4F6F136BA27`, but the action child was absent.
+- The debounce wrapper and compiled helper were still present and executable.
+- The compiled helper still found the current Codex sidebar controls.
+- Logitech continued to emit `Ctrl+B`, and BTT continued to receive it.
+
+The most likely cause was BTT migration or cleanup of the trigger's previously
+edited action sequence. That sequence had accumulated obsolete shell-task,
+direct-helper, and debounce action records during earlier troubleshooting. The
+database evidence does not prove BTT's exact internal migration decision, so
+treat this as the strongest supported explanation rather than a confirmed
+upstream bug.
+
+The repair was to create one fresh action child on the existing trigger:
+
+```text
+Ctrl+B
+  -> Execute Terminal Command (Async, non-blocking)
+  -> "~/Library/Application Support/BetterTouchTool/CustomScripts/codex-sidebar-toggle-debounced"
+```
+
+The repaired configuration has one clear trigger-to-action relationship. A
+future BTT update could still detach it, so test `Ctrl+B` after BTT updates. If
+the BTT usage count increases but the sidebar does not change, first confirm
+that the async terminal action is still present and points to the debounce
+wrapper.
+
 ## App Switcher Mode
 
 BTT's special app switcher mode is enabled:
@@ -232,12 +402,19 @@ Current Magic Mouse gestures:
 | --- | --- | --- | --- |
 | 1-finger tap | `1` | `3` / Left Click at current mouse position | `73D46814-59D7-450D-8B99-FEB4FDE8CDF1` |
 | 1-finger tap right | `3` | `4` / Right Click at current mouse position | `042FC1A5-03DD-4C9D-9424-C5D6297DABBC` |
-| TipTap Left (1 Finger Fix) | `16` | `61` / right Option, triggers Wispr hands-free | `497F16E1-1725-4D6E-BD16-B8F88259EF2F` |
+| TipTap Left (1 Finger Fix) | `16` | `49` / launch `~/Applications/Spokenly Toggle.app` | `497F16E1-1725-4D6E-BD16-B8F88259EF2F` |
 | 2-finger swipe right | `6` | `46` / Application Switcher | `95B221B7-9EC1-4C8A-8D15-5542228FCF02` |
 | 3-finger tap | `9` | `1` / Middle Click at current mouse position | `CFBD7467-2660-467F-ABB4-D30CE1E9F021` |
 
 These are global Magic Mouse gestures. Their BTT trigger class is
 `BTTTriggerTypeMagicMouse`, not the trackpad trigger class.
+
+The TipTap Left trigger uses launch application action `49`, child action UUID
+`B78BFD97-6D98-496B-8D15-42B6701235FF`. It calls the same background Spokenly
+helper as the trackpad and MX Master. The previous trigger-level `61` / Right
+Option shortcut is absent in the current Spokenly state. `trx wispr` replaces
+the trigger with the Right Option form, and `trx spokenly` restores this helper
+action.
 
 BTT does support a dedicated Magic Mouse trigger class:
 
@@ -421,6 +598,20 @@ the global action middle click:
 
 ```text
 ~/.dotfiles/backups/bettertouchtool/20260709-030123-before-codex-scoped-magic-mouse-3finger-enter
+```
+
+Trigger JSON from before moving the trackpad 3-finger tap from Wispr Flow to
+Spokenly:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260801-before-spokenly-trackpad/trackpad-trigger-before.json
+```
+
+Trigger JSON from before moving Magic Mouse TipTap Left from Wispr Flow to
+Spokenly:
+
+```text
+~/.dotfiles/backups/bettertouchtool/20260801-before-spokenly-magic-mouse/magic-mouse-trigger-before.json
 ```
 
 ## Troubleshooting
