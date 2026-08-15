@@ -1,9 +1,6 @@
 # Alacritty config for macOS - Dropdown terminal
 # Use Ghostty for main terminal work, Alacritty for quick floating access
 
-[general]
-import = ["~/.config/alacritty/themes/mercedes-petronas.toml"]
-
 [env]
 TERM = "xterm-256color"
 

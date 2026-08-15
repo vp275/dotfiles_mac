@@ -2,7 +2,6 @@
 # Stripped to near-defaults on 2026-06-16 to use Ghostty's out-of-the-box feel.
 # See docs/CHANGELOG.md for the full before/after and how to restore the old setup.
 
-theme = mercedes-petronas
 background-opacity = 0.95
 background-blur = 20
 font-family = JetBrainsMono Nerd Font Mono
