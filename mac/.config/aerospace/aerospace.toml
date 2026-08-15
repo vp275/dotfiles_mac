@@ -1,6 +1,11 @@
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
+# Config version for compatibility and deprecations.
+# Version 2 requires explicit workspace persistence, matching the v1 behavior
+# that inferred persistence from workspace bindings.
+config-version = 2
+
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
@@ -42,6 +47,12 @@ exec-on-workspace-change = ['/Users/vp/.local/bin/aerospace-pip-guardian', 'auto
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
 automatically-unhide-macos-hidden-apps = false
 
+# Keep the same workspaces alive when empty as the former v1 binding inference.
+persistent-workspaces = [
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'M', 'N', 'O', 'P', 'Q',
+    'S', 'T', 'U', 'V', 'W', 'Y', 'Z',
+]
 
 # Workspace to monitor assignments
 # Primary workspaces prefer the LG display when connected, with macOS main as
@@ -136,10 +147,6 @@ run = 'move-node-to-workspace 6'
 
 # Workspace 8 - Messaging/Communication
 [[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace 8'
-
-[[on-window-detected]]
 if.app-name-regex-substring = 'Discord'
 run = 'move-node-to-workspace 8'
 
@@ -232,14 +239,18 @@ run = 'move-node-to-workspace N'
 if.app-id = 'com.apple.iBooksX'
 run = ['layout floating', 'move-node-to-workspace O']
 
-# Workspace S - Social/Forums
+# Workspace S - Slack
 [[on-window-detected]]
-if.app-name-regex-substring = 'Comet'
+if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace S'
 
 # Workspace V - Claude AI
 [[on-window-detected]]
 if.app-name-regex-substring = 'Claude'
+run = 'move-node-to-workspace V'
+
+[[on-window-detected]]
+if.app-id = 'com.conductor.app'
 run = 'move-node-to-workspace V'
 
 # Workspace 10 - YouTube Music
@@ -256,10 +267,10 @@ run = 'move-node-to-workspace Y'
 if.app-name-regex-substring = 'mpv'
 run = 'layout floating'
 
-# Workspace S - Day One (with Comet)
+# Workspace Z - Day One
 [[on-window-detected]]
 if.app-name-regex-substring = 'Day One'
-run = 'move-node-to-workspace S'
+run = 'move-node-to-workspace Z'
 
 # Workspace O - Obsidian (with Books)
 [[on-window-detected]]

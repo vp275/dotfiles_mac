@@ -16,6 +16,9 @@ The sticky build is started at login by
 `~/Library/LaunchAgents/com.vp.aerospace-sticky.plist`; therefore
 `start-at-login` stays disabled in the TOML.
 
+The config uses `config-version = 2`. `persistent-workspaces` explicitly
+preserves the v1 behavior for all currently bound workspace keys.
+
 ## Keybindings
 
 **Navigation** (alt + vim keys):
@@ -56,7 +59,7 @@ The sticky build is started at login by
 | 2 | Calendar |
 | 3 | Things, Linear |
 | 4-6 | TradingView, IB Gateway, TWS |
-| 8 | Slack, Discord, Telegram, WhatsApp |
+| 8 | Discord, Telegram, WhatsApp |
 | 10 | Spotify, YouTube Music |
 | A | Excel, Word, sioyek |
 | B | Arc, Firefox, Brave, Helium |
@@ -69,9 +72,10 @@ The sticky build is started at login by
 | N | Safari, Notion |
 | O | Books (floating), Obsidian |
 | P | VS Code |
-| S | Comet (Reddit), Day One |
+| S | Slack |
 | V | Claude |
 | Y | YouTube |
+| Z | Day One |
 
 ## Floating Apps
 

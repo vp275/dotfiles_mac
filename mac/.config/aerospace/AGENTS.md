@@ -35,6 +35,8 @@ Run `aerospace reload-config` after changing `aerospace.toml`. For documentation
   `com.vp.aerospace-sticky.plist`; the config's built-in login registration is
   disabled so the released and custom builds do not race.
 - Uses flattened container normalization and opposite-orientation normalization.
+- Uses `config-version = 2`; keep `persistent-workspaces` aligned with the
+  explicit workspace bindings when adding or removing one.
 - Default layout is `tiles`; root orientation is `auto`.
 - Accordion padding is `30`.
 - All inner and outer gaps are `0`.
@@ -59,7 +61,7 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 | `4` | TradingView |
 | `5` | IB Gateway |
 | `6` | Trader Workstation |
-| `8` | Slack, Discord, Telegram, WhatsApp |
+| `8` | Discord, Telegram, WhatsApp |
 | `10` | Spotify, YouTube Music |
 | `A` | Microsoft Excel, Microsoft Word, sioyek |
 | `B` | Arc, Firefox, Brave, Helium |
@@ -71,9 +73,10 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 | `M` | Gmail |
 | `N` | Safari, Notion |
 | `O` | Books floating, Obsidian |
-| `S` | Comet, Day One |
+| `S` | Slack |
 | `V` | Claude |
 | `Y` | YouTube |
+| `Z` | Day One |
 
 Additional rules:
 

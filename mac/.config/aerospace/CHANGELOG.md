@@ -1,5 +1,13 @@
 # Aerospace Configuration Changelog
 
+## 2026-08-03
+- Migrated to `config-version = 2` and explicitly listed persistent workspaces
+  to preserve the former v1 binding-inferred lifecycle.
+- Removed the retired Comet assignment.
+- Moved Day One to workspace `Z`, which is already designated for
+  journal/knowledge use.
+- Moved Slack (`com.tinyspeck.slackmacgap`) from workspace 8 to workspace S.
+
 ## 2026-07-25
 - Added Linear (`com.linear`) to workspace 3 by default.
 

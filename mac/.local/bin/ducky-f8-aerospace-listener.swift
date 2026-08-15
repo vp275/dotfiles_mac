@@ -8,11 +8,7 @@ let logURL = FileManager.default.homeDirectoryForCurrentUser
     .appendingPathComponent("Library/Logs/ducky-f8-aerospace-listener.log")
 let aerospaceTogglePath = FileManager.default.homeDirectoryForCurrentUser
     .appendingPathComponent(".local/bin/aerospace-toggle-enabled").path
-let protonVPNTogglePath = FileManager.default.homeDirectoryForCurrentUser
-    .appendingPathComponent(".local/bin/protonvpn-app-toggle").path
-
 var lastAeroSpaceTrigger = CFAbsoluteTimeGetCurrent() - 10
-var lastProtonVPNTrigger = CFAbsoluteTimeGetCurrent() - 10
 var listenOnly = false
 
 func log(_ message: String) {
@@ -41,18 +37,6 @@ func toggleAeroSpace(reason: String) {
     try? process.run()
 }
 
-func toggleProtonVPN(reason: String) {
-    let now = CFAbsoluteTimeGetCurrent()
-    guard now - lastProtonVPNTrigger > 0.7 else { return }
-    lastProtonVPNTrigger = now
-
-    log("toggle protonvpn reason=\(reason)")
-
-    let process = Process()
-    process.executableURL = URL(fileURLWithPath: protonVPNTogglePath)
-    try? process.run()
-}
-
 let callback: CGEventTapCallBack = { _, type, event, _ in
     if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
         log("event tap disabled")
@@ -65,15 +49,9 @@ let callback: CGEventTapCallBack = { _, type, event, _ in
     }
     let isAutorepeat = event.getIntegerValueField(.keyboardEventAutorepeat) != 0
 
-    let directF4 = keyCode == 118
     let directF8OrF18 = keyCode == 100 || keyCode == 79
 
-    if directF4 {
-        if !isAutorepeat {
-            toggleProtonVPN(reason: "keyCode=\(keyCode)")
-        }
-        return listenOnly ? Unmanaged.passUnretained(event) : nil
-    } else if directF8OrF18 {
+    if directF8OrF18 {
         if !isAutorepeat {
             toggleAeroSpace(reason: "keyCode=\(keyCode)")
         }
