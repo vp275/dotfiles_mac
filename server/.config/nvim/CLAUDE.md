@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Neovim configuration using lazy.nvim and the built-in `default` colorscheme.
+Neovim configuration using lazy.nvim and the Kanagawa Wave colorscheme.
 
 ## Plugin Manager
 
@@ -26,6 +26,7 @@ return {
 
 | File | Plugin | Purpose |
 |------|--------|---------|
+| `colorscheme.lua` | `rebelot/kanagawa.nvim` | Kanagawa Wave colorscheme |
 | `lualine.lua` | `nvim-lualine/lualine.nvim` | Status line |
 | `render-markdown.lua` | `MeanderingProgrammer/render-markdown.nvim` | Renders markdown with formatting |
 | `render-markdown.lua` | `nvim-treesitter/nvim-treesitter` | Syntax parsing |
@@ -120,8 +121,8 @@ to open a selected file and return to Neovim.
 
 ## Theme
 
-`init.lua` explicitly loads Neovim's built-in default:
+`init.lua` explicitly loads Kanagawa's warm dark Wave variant:
 
 ```lua
-vim.cmd("colorscheme default")
+vim.cmd("colorscheme kanagawa-wave")
 ```

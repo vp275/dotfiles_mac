@@ -33,5 +33,5 @@ vim.opt.textwidth = 80
 -- Load plugins
 require("lazy").setup("plugins")
 
--- Use Neovim's built-in default colors.
-vim.cmd("colorscheme default")
+-- Use Kanagawa's warm dark Wave variant.
+vim.cmd("colorscheme kanagawa-wave")
