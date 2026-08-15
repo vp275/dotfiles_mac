@@ -20,9 +20,9 @@ The installed Ranger 1.9.4 also contains a confirmed macOS subprocess-signal
 bug. Fixing that comes first. Afterward, the best preview optimization is to
 restore external previews in the vault and add an early Markdown fast path to
 `scope.sh`. That path should invoke Bat directly, before MIME detection, with
-an explicit Markdown language and a bounded line range. This preserves the
-Mercedes-Petronas theme and Ranger's in-session preview cache while avoiding
-the rest of the generic preview pipeline.
+an explicit Markdown language and a bounded line range. This preserves Bat
+highlighting and Ranger's in-session preview cache while avoiding the rest of
+the generic preview pipeline.
 
 ## What Bat is doing
 
@@ -55,17 +55,14 @@ This means the upstream-supported low-latency knobs are:
 - `--style=plain`, to skip decorations Ranger does not need.
 - `--language=Markdown`, to skip filename-based syntax selection.
 - `--line-range=:N`, to bound the content Bat processes for a preview.
-- A fixed theme, which is already provided by `BAT_THEME`.
+- The built-in `ansi` theme, selected in Bat's config for portable output.
 
 ## What the Bat cache does
 
 `bat cache --build` compiles custom syntax definitions and themes into binary
-asset files. It is required for the custom Mercedes-Petronas theme. It is not a
-cache of rendered file output.
-
-Each new Bat process still loads the relevant compiled assets. Bat can bypass
-custom assets with `--no-custom-assets`, but that also makes the custom theme
-unavailable and only produced a small improvement locally.
+asset files. The built-in `ansi` theme does not depend on custom assets. A cache
+rebuild after removing a custom theme clears its stale compiled asset; it is
+not a cache of rendered file output.
 
 Sources:
 
@@ -73,8 +70,8 @@ Sources:
 - [Bat custom asset selection source](https://github.com/sharkdp/bat/blob/78951393e29bfd2f2a45f4326b9d2bb5e737dd2a/src/bin/bat/assets.rs#L18-L44)
 - [Bat lazy asset source](https://github.com/sharkdp/bat/blob/78951393e29bfd2f2a45f4326b9d2bb5e737dd2a/src/assets.rs#L28-L78)
 
-Rebuilding the Bat cache fixes missing or incompatible custom themes. Rebuilding
-it repeatedly does not make note previews progressively faster.
+Rebuild the Bat cache after changing custom assets. Rebuilding it repeatedly
+does not make note previews progressively faster.
 
 ## What Ranger is doing
 
@@ -140,7 +137,7 @@ Environment:
 - macOS on Apple Silicon
 - Ranger 1.9.4
 - Bat 0.26.1
-- Custom Mercedes-Petronas Bat theme
+- A custom Bat theme at measurement time; current config uses built-in `ansi`
 - Warm filesystem cache
 - 50 runs against Markdown notes in `/Users/vp/vault`
 
@@ -159,10 +156,10 @@ ms for `stat`, and 1.9 ms for `tput`. Bat was less than half of the current
 54 ms full pipeline. The generic `scope.sh` path is therefore the larger
 optimization opportunity.
 
-The custom theme is not the main problem. Using a built-in theme or bypassing
-custom assets changed the local Bat median by less than 1 ms. Bounding the line
-range and fixing the Markdown language helped more, while keeping the desired
-theme.
+Theme selection is not the main performance factor. Using a built-in theme or
+bypassing custom assets changed the local Bat median by less than 1 ms. The
+current config chooses `ansi` for portability; bounding the line range and
+fixing the Markdown language provide the material latency improvement.
 
 ## Recommended implementation
 
@@ -195,7 +192,7 @@ esac
 
 Expected result:
 
-- Bat highlighting and the Mercedes-Petronas theme return in the vault.
+- Bat highlighting with the portable `ansi` theme returns in the vault.
 - A cold Markdown preview should fall from roughly 54 ms toward 30 ms locally.
 - Revisiting a completed preview in the same Ranger session should use Ranger's
   memory cache.
@@ -230,7 +227,7 @@ that. In this setup, most avoidable latency comes from Ranger's generic
 Ranger's stale preview queue behavior.
 
 The practical sequence is to fix the installed Ranger signal bug, then add the
-Markdown fast path. This should restore the theme with a meaningful latency
+Markdown fast path. This should restore highlighting with a meaningful latency
 reduction and stop the known macOS pause/resume failure. If the remaining
 roughly 30 ms cold cost still feels poor during rapid traversal, preview
 cancellation or debounce in Ranger is the next technically relevant fix.

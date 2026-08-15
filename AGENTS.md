@@ -9,8 +9,8 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
   with `cd ~/.dotfiles && stow <package>`.
 - `archive/linux/` preserves the old Linux package for reference only.
 - The workflow is Vim-centric and keyboard-driven.
-- The main visual identity is Mercedes Petronas: black backgrounds, teal
-  accents, silver modified state, scarlet errors.
+- Terminal tools use portable application defaults instead of a shared custom
+  palette.
 - Treat live config files as the source of truth when docs drift.
 - Do not edit secrets or machine-local files such as `.zshenv.local`,
   `.zshrc.local`, or `config.local` unless explicitly asked.
@@ -46,8 +46,7 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 |-- docs/
 |-- README.md
 |-- CLAUDE.md
-|-- AGENTS.md
-`-- theme-colors.md
+`-- AGENTS.md
 ```
 
 Important app docs:
@@ -123,27 +122,20 @@ Machine-specific files are intentionally gitignored:
   Cmd-to-Meta keybind block.
 - tmux still defines Meta bindings such as `M-d`, `M-t`, and `M-e`; they only
   fire in terminals that actually send Meta.
-- Neovim loads the custom `mercedes-petronas` colorscheme. Nightfox/carbonfox is
-  kept as a fallback plugin.
+- Neovim loads its built-in `default` colorscheme with no external theme
+  dependency.
 - The tracked `.zshrc` does not define `glm`; verify local shell config before
   assuming the command exists.
 
-## Theme
+## Color defaults
 
-Reference: `theme-colors.md`.
-
-- Petronas teal: `#00D2BE` for primary accents and active states.
-- Dark teal: `#00A896` for secondary accents and clean status.
-- Pure black: `#0A0A0A` for darkest backgrounds.
-- Near black: `#151515` for status backgrounds.
-- Dark grey: `#1A1A1A` for secondary panels.
-- Silver: `#D8D8D8` for modified/dirty state.
-- Scarlet: `#CC2936` for errors and conflicts.
-- Light text: `#f2f4f8`.
-- Dark text: `#161616`.
-
-Applied across Ghostty, tmux, p10k, ranger, zsh syntax highlighting, bat, and
-Neovim.
+- Ghostty and Alacritty inherit their terminal palettes.
+- Powerlevel10k keeps the rainbow layout with upstream color indexes.
+- tmux status elements inherit terminal foreground and background colors.
+- Ranger uses its bundled `default` colorscheme.
+- Bat selects the built-in `ansi` theme in its config.
+- Neovim explicitly loads its built-in `default` colorscheme.
+- Doom Org faces inherit their colors from Doom One.
 
 ## App Notes
 
@@ -152,16 +144,16 @@ Zsh:
 - Main files: `mac/.zshrc`, `mac/.config/zsh/CLAUDE.md`, `mac/.p10k.zsh`.
 - Secrets load at the top from `~/.config/zsh/.zshenv.local`.
 - p10k instant prompt should stay near the top.
-- `EDITOR` and `VISUAL` are `nvim`; `BAT_THEME` is `Mercedes-Petronas`.
+- `EDITOR` and `VISUAL` are `nvim`; Bat selects `ansi` in its config.
 - Claude aliases in tracked config include `cl`, `cld`, `clds`, `cldr`, `cldc`,
   `cldp`, `ccv`, `ccvcd`, and `ccvd`.
 
 Neovim:
 
-- Main files: `mac/.config/nvim/init.lua`, plugin specs in
-  `mac/.config/nvim/lua/plugins/`, and `mac/.config/nvim/colors/`.
+- Main files: `mac/.config/nvim/init.lua` and plugin specs in
+  `mac/.config/nvim/lua/plugins/`.
 - Leader key is Space.
-- Current colorscheme is `mercedes-petronas`.
+- Current colorscheme is Neovim's built-in `default`.
 - `claude-tmux.lua` adds `<leader>cc`, `<leader>cC`, `<leader>cg`, and
   `<leader>cr` tmux split helpers.
 

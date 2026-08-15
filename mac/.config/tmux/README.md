@@ -2,7 +2,7 @@
 
 This folder keeps tmux comfortable for keyboard-heavy work: Ctrl+a prefix,
 vi-style copy mode, mouse support, session restore, custom pickers, and a
-Mercedes Petronas status bar.
+terminal-default status bar.
 
 ## Current Ghostty relationship
 

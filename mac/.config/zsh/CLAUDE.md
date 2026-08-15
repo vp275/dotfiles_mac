@@ -80,7 +80,7 @@ it comes from local shell config or another installed command.
 ## Environment
 
 - `EDITOR` / `VISUAL` = `nvim`
-- `BAT_THEME` = `Mercedes-Petronas`
+- Bat selects the built-in `ansi` theme in `~/.config/bat/config`
 - `TERM` = `xterm-256color`
 - direnv hook enabled
 - Claude Code no-flicker and tmux truecolor env flags are enabled
@@ -88,15 +88,10 @@ it comes from local shell config or another installed command.
 
 ## Prompt Configuration
 
-Powerlevel10k is configured via `mac/.p10k.zsh`, stowed to `~/.p10k.zsh`.
+Powerlevel10k is configured via `mac/.p10k.zsh`, stowed to `~/.p10k.zsh`, and
+uses upstream rainbow color indexes.
 
 ## Syntax Highlighting
 
-zsh-syntax-highlighting uses teal for valid commands:
-
-```zsh
-ZSH_HIGHLIGHT_STYLES[command]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
-```
+zsh-syntax-highlighting uses its plugin defaults; the tracked `.zshrc` does not
+override semantic highlight colors.

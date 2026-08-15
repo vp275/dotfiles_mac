@@ -8,9 +8,8 @@ this repository.
 User dotfiles (`~/.dotfiles`) are managed with GNU Stow. This repo is now a
 macOS-focused setup with a single active Stow package: `mac/`.
 
-The workflow is Vim-centric and keyboard-driven, with a Mercedes Petronas theme
-(black + teal) across the terminal stack and editor tooling. See
-`theme-colors.md` for the full palette.
+The workflow is Vim-centric and keyboard-driven. Terminal tools use portable
+application defaults instead of a repository-wide custom palette.
 
 ## Common Commands
 
@@ -56,7 +55,7 @@ tmux source-file ~/.config/tmux/tmux.conf
 |       |-- btop/
 |       `-- neofetch/
 |-- archive/linux/          # Inactive Linux config kept for reference
-`-- theme-colors.md         # Color palette reference
+`-- server/                 # Active Ubuntu terminal package
 ```
 
 ## App-Specific Docs
@@ -106,10 +105,9 @@ Meta bindings available for terminals that send Meta.
 and `ccv*`. If `glm` is available, it comes from local shell config or another
 installed command, not from the tracked `.zshrc`.
 
-## Theme
+## Color defaults
 
-Mercedes Petronas theme is applied to Ghostty, tmux, p10k, ranger,
-zsh-syntax-highlighting, bat, and Neovim.
-
-Key colors: `#00D2BE` (teal), `#0A0A0A` (black), `#D8D8D8` (silver),
-`#CC2936` (scarlet for errors).
+Ghostty and Alacritty use their terminal palettes. Powerlevel10k uses upstream
+rainbow values, tmux inherits terminal foreground and background colors, Ranger
+uses its bundled default, Bat uses `ansi`, Neovim uses `default`, and Doom Org
+faces inherit colors from Doom One.

@@ -19,17 +19,17 @@ ghostty +show-config  # Show effective config vs defaults
 
 The live config is intentionally small:
 
-- `theme = mercedes-petronas` — custom black/teal theme with distinct ANSI roles
-- `background-opacity = 0.97` — slight transparency
+- `background-opacity = 0.95` — slight transparency
 - `background-blur = 20` — blur translucent content behind the window
-- `font-size = 19` — on Ghostty's **default** font (no custom font-family/style)
+- `font-family = JetBrainsMono Nerd Font Mono`
+- `font-size = 19`
 - `macos-titlebar-style = native`
 
 The config file is the source of truth; do not trust exact values written here.
 
 Everything else runs at Ghostty defaults, including:
-- **Font:** default family/weight; `font-thicken` defaults to `false` (text looks
-  thinner than Alacritty/Core Text apps; set `font-thicken = true` to match).
+- **Font rendering:** default weight and antialiasing; `font-thicken` remains
+  `false`.
 - **Clipboard:** stock copy/paste works out of the box. Re-add
   `clipboard-read = allow` only to silence OSC52 read prompts, or
   `copy-on-select = clipboard` to auto-copy mouse selections.

@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-Tmux configuration using Ctrl+a prefix, vi mode, TPM plugins, and a Mercedes
-Petronas status bar.
+Tmux configuration using Ctrl+a prefix, vi mode, TPM plugins, and a status bar
+that inherits terminal foreground and background colors.
 
 ## Current Terminal Relationship
 
@@ -80,8 +80,8 @@ tmux source-file ~/.config/tmux/tmux.conf
 
 ## Status Bar
 
-Mercedes Petronas themed. Shows the session name, window list, VQA/Stripe
-revenue helper output, NY time, local date, and local time.
+The status bar inherits terminal colors and shows the session name, window
+list, VQA/Stripe revenue helper output, NY time, local date, and local time.
 
 Window names auto-rename to the basename of the active pane's cwd. In the status
 bar, names are truncated to 10 chars; the underlying window name stays full

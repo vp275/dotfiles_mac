@@ -33,9 +33,9 @@ ssh myserver 'sudo chsh -s /usr/bin/zsh vp'
 ssh myserver 'printf "%s\\n" "$SHELL"; zsh -lic "echo zsh-ready"'
 ```
 
-Tmux is optional. SSH opens zsh normally, and `tmux` starts the familiar
-Petronas configuration. Copy mode uses tmux's OSC 52 support so copied text is
-sent back to Ghostty through SSH.
+Tmux is optional. SSH opens zsh normally, and `tmux` starts with
+terminal-default status colors. Copy mode uses tmux's OSC 52 support so copied
+text is sent back to Ghostty through SSH.
 
 Ubuntu packages name the bat and fd commands `batcat` and `fdfind`. The server
 package supplies `~/.local/bin/bat` and `~/.local/bin/fd` compatibility

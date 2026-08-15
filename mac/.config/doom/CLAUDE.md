@@ -68,7 +68,7 @@ Org-roam directory: `~/Dropbox/admin/org/org-roam/`
 
 ## Appearance
 
-- Theme: `doom-one`, with Mercedes Petronas face overrides in Org buffers
+- Theme: `doom-one`; Org faces inherit Doom One colors
 - Code font: JetBrainsMono Nerd Font Mono (22pt, Light)
 - Org prose font: IBM Plex Sans (22pt)
 - Org buffers use a centered 90-column writing area, soft wrapping, and proportional text

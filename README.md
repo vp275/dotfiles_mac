@@ -1,7 +1,7 @@
 <h1 align="center">~/.dotfiles</h1>
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3000&pause=1000&color=00D2BE&center=true&vCenter=true&width=435&lines=vim+enthusiast;keyboard+driven+workflow;mercedes+petronas+theme;macOS+daily+driver" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3000&pause=1000&center=true&vCenter=true&width=435&lines=vim+enthusiast;keyboard+driven+workflow;portable+terminal+colors;macOS+daily+driver" alt="Typing SVG" />
 </p>
 
 <p align="center">
@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/tmux-1BB91F?logo=tmux&logoColor=white" alt="tmux">
   <img src="https://img.shields.io/badge/Ghostty-161616?logo=ghost&logoColor=white" alt="Ghostty">
   <br>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=vp275.dotfiles&left_color=%23161616&right_color=%2300D2BE" alt="Visitors">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=vp275.dotfiles" alt="Visitors">
 </p>
 
 ---
@@ -80,8 +80,7 @@ scripts/provision-server-terminal.sh
 |-- docs/
 |-- CLAUDE.md
 |-- AGENTS.md
-|-- README.md
-`-- theme-colors.md
+`-- README.md
 ```
 
 ## Key Features
@@ -97,19 +96,12 @@ scripts/provision-server-terminal.sh
 - [BetterTouchTool gesture setup](docs/btt/README.md)
 - [Ducky One 2 macOS setup](docs/ducky-one-2-setup.md)
 
-## Theme: Mercedes Petronas
+## Portable color defaults
 
-Custom dark theme inspired by Mercedes-AMG Petronas F1. See [theme-colors.md](theme-colors.md) for full palette.
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Petronas Teal | `#00D2BE` | Primary accent, directories, prompt |
-| Pure Black | `#0A0A0A` | Backgrounds |
-| Silver | `#D8D8D8` | Git modified state |
-| Scarlet | `#CC2936` | Errors, conflicts |
-| Light Text | `#f2f4f8` | Foreground |
-
-Applied to: Ghostty, tmux, p10k, ranger, zsh-syntax-highlighting, bat, and Neovim.
+Terminal emulators use their default palettes. Powerlevel10k uses upstream
+rainbow colors, tmux inherits terminal foreground and background colors, Ranger
+uses its bundled default, Bat uses `ansi`, Neovim uses `default`, and Doom Emacs
+inherits colors from Doom One.
 
 ---
 

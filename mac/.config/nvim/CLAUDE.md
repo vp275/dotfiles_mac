@@ -1,7 +1,6 @@
 # CLAUDE.md
 
-Neovim configuration using lazy.nvim with a custom Mercedes Petronas
-colorscheme. Nightfox/carbonfox remains installed as a fallback.
+Neovim configuration using lazy.nvim and the built-in `default` colorscheme.
 
 ## Plugin Manager
 
@@ -27,7 +26,6 @@ return {
 
 | File | Plugin | Purpose |
 |------|--------|---------|
-| `colorscheme.lua` | `EdenEast/nightfox.nvim` | Keeps carbonfox available as fallback |
 | `lualine.lua` | `nvim-lualine/lualine.nvim` | Status line |
 | `render-markdown.lua` | `MeanderingProgrammer/render-markdown.nvim` | Renders markdown with formatting |
 | `render-markdown.lua` | `nvim-treesitter/nvim-treesitter` | Syntax parsing |
@@ -127,9 +125,8 @@ Twilight remains disabled. Use `<leader>z` to toggle zen mode manually.
 
 ## Theme
 
-`init.lua` loads `colorscheme mercedes-petronas` from
-`colors/mercedes-petronas.lua`. To switch back manually:
+`init.lua` explicitly loads Neovim's built-in default:
 
 ```lua
-vim.cmd("colorscheme carbonfox")
+vim.cmd("colorscheme default")
 ```
