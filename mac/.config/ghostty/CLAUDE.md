@@ -21,6 +21,7 @@ The live config is intentionally small:
 
 - `theme = mercedes-petronas` — custom black/teal theme with distinct ANSI roles
 - `background-opacity = 0.97` — slight transparency
+- `background-blur = 20` — blur translucent content behind the window
 - `font-size = 19` — on Ghostty's **default** font (no custom font-family/style)
 - `macos-titlebar-style = native`
 

@@ -3,7 +3,9 @@
 # See docs/CHANGELOG.md for the full before/after and how to restore the old setup.
 
 theme = mercedes-petronas
-background-opacity = 0.97
+background-opacity = 0.95
+background-blur = 20
+font-family = JetBrainsMono Nerd Font Mono
 font-size = 19
 macos-titlebar-style = native
 

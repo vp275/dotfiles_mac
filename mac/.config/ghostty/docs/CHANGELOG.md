@@ -1,5 +1,10 @@
 # Ghostty Config Changelog
 
+## 2026-08-05 - Add background blur
+
+- Enabled Ghostty's recommended blur intensity of `20` while keeping the
+  existing `0.97` background opacity.
+
 ## 2026-07-18 - Restore ranger's exact Petronas teal
 
 - Mapped xterm-256 color 43 to `#00D2BE` so ranger keeps its portable indexed
