@@ -121,11 +121,6 @@ $IS_MAC && [[ -d /opt/homebrew/share/zsh/site-functions ]] && fpath+=(/opt/homeb
 
 source $ZSH/oh-my-zsh.sh
 
-# Syntax highlighting colors (Mercedes theme - teal instead of green)
-ZSH_HIGHLIGHT_STYLES[command]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
 
 # User configuration
 
@@ -140,7 +135,6 @@ export PUPPETEER_CACHE_DIR="$HOME/.local/share/puppeteer"
 # Preferred editor for local and remote sessions
 export EDITOR='nvim'
 export VISUAL='nvim'
-export BAT_THEME='Mercedes-Petronas'
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"

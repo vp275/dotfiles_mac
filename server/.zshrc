@@ -12,7 +12,6 @@ export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR='nvim'
 export VISUAL='nvim'
-export BAT_THEME='Mercedes-Petronas'
 
 ZSH_THEME='powerlevel10k/powerlevel10k'
 DISABLE_UNTRACKED_FILES_DIRTY='true'
@@ -36,12 +35,6 @@ typeset -U fpath
 [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-if (( ${+parameters[ZSH_HIGHLIGHT_STYLES]} )); then
-  ZSH_HIGHLIGHT_STYLES[command]='fg=cyan,bold'
-  ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan,bold'
-  ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan,bold'
-  ZSH_HIGHLIGHT_STYLES[function]='fg=cyan,bold'
-fi
 
 (( ${+commands[direnv]} )) && eval "$(direnv hook zsh)"
 [[ -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
