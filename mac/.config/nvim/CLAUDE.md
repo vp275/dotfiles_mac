@@ -100,6 +100,10 @@ to open a selected file and return to Neovim.
 | Key | Action |
 |-----|--------|
 | `<leader>z` | Toggle zen mode |
+| `<leader>mp` | Preview the current Markdown file with mdcat |
+| `<leader>mc` | Preview the current Markdown file as a Pandoc grid |
+| `<leader>mg` | Preview the current Markdown file with Glow |
+
 
 ### Claude/GLM tmux integration
 

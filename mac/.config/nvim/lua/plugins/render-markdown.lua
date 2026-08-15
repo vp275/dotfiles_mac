@@ -6,6 +6,29 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     ft = { "markdown" },
+    keys = {
+      {
+        "<leader>mp",
+        function()
+          require("mdcat-preview").open()
+        end,
+        desc = "Markdown preview (mdcat)",
+      },
+      {
+        "<leader>mc",
+        function()
+          require("mdcat-preview").open_pandoc()
+        end,
+        desc = "Markdown preview (Pandoc grid)",
+      },
+      {
+        "<leader>mg",
+        function()
+          require("mdcat-preview").open_glow()
+        end,
+        desc = "Markdown preview (Glow)",
+      },
+    },
     opts = {},
   },
   {
