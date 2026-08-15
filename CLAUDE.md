@@ -107,7 +107,7 @@ installed command, not from the tracked `.zshrc`.
 
 ## Color defaults
 
-Ghostty and Alacritty use their terminal palettes. Powerlevel10k uses upstream
-rainbow values, tmux inherits terminal foreground and background colors, Ranger
-uses its bundled default, Bat uses `ansi`, Neovim uses `default`, and Doom Org
-faces inherit colors from Doom One.
+Ghostty and Alacritty use their terminal palettes. macOS Powerlevel10k uses a
+compact one-line Lean prompt, while the server keeps the upstream rainbow
+layout. tmux inherits terminal colors, Ranger uses its bundled default, Bat
+uses `ansi`, Neovim uses Kanagawa Wave, and Doom Org faces inherit Doom One.

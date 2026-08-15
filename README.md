@@ -89,19 +89,22 @@ scripts/provision-server-terminal.sh
 - **Vim-centric** - Evil mode in Emacs, vim keybinds everywhere
 - **Keyboard-driven** - AeroSpace WM, tmux, minimal mouse usage
 - **Terminal workflow** - Ghostty is native/minimal; tmux remains available for multiplexing
+- **Provider switching** - `trx` transactionally redirects trackpad and mouse dictation inputs between Spokenly and Wispr Flow
 
 ## Notes
 
+- [Transcription provider profiles and `trx` switcher](docs/transcription/README.md)
+- [Custom Logitech, BetterTouchTool, and transcription shortcut reference](docs/shortcut-reference.md)
 - [MX Master 3S, Logitech Options+, and Wispr Flow setup](docs/logitech-options-wispr-flow.md)
 - [BetterTouchTool gesture setup](docs/btt/README.md)
 - [Ducky One 2 macOS setup](docs/ducky-one-2-setup.md)
 
 ## Portable color defaults
 
-Terminal emulators use their default palettes. Powerlevel10k uses upstream
-rainbow colors, tmux inherits terminal foreground and background colors, Ranger
-uses its bundled default, Bat uses `ansi`, Neovim uses `default`, and Doom Emacs
-inherits colors from Doom One.
+Terminal emulators use their default palettes. macOS Powerlevel10k uses a
+compact one-line Lean prompt, while the server keeps the upstream rainbow
+layout. tmux inherits terminal colors, Ranger uses its bundled default, Bat
+uses `ansi`, Neovim uses Kanagawa Wave, and Doom Emacs inherits Doom One.
 
 ---
 

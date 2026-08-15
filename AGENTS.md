@@ -122,19 +122,19 @@ Machine-specific files are intentionally gitignored:
   Cmd-to-Meta keybind block.
 - tmux still defines Meta bindings such as `M-d`, `M-t`, and `M-e`; they only
   fire in terminals that actually send Meta.
-- Neovim loads its built-in `default` colorscheme with no external theme
-  dependency.
+- Neovim loads Kanagawa Wave from `rebelot/kanagawa.nvim`.
 - The tracked `.zshrc` does not define `glm`; verify local shell config before
   assuming the command exists.
 
 ## Color defaults
 
 - Ghostty and Alacritty inherit their terminal palettes.
-- Powerlevel10k keeps the rainbow layout with upstream color indexes.
+- macOS Powerlevel10k uses a compact one-line Lean layout; the server keeps the
+  upstream rainbow layout.
 - tmux status elements inherit terminal foreground and background colors.
 - Ranger uses its bundled `default` colorscheme.
 - Bat selects the built-in `ansi` theme in its config.
-- Neovim explicitly loads its built-in `default` colorscheme.
+- Neovim loads Kanagawa Wave.
 - Doom Org faces inherit their colors from Doom One.
 
 ## App Notes
@@ -153,7 +153,7 @@ Neovim:
 - Main files: `mac/.config/nvim/init.lua` and plugin specs in
   `mac/.config/nvim/lua/plugins/`.
 - Leader key is Space.
-- Current colorscheme is Neovim's built-in `default`.
+- Current colorscheme is Kanagawa Wave.
 - `claude-tmux.lua` adds `<leader>cc`, `<leader>cC`, `<leader>cg`, and
   `<leader>cr` tmux split helpers.
 
@@ -194,6 +194,23 @@ AeroSpace:
 - Do not commit secrets or edit ignored local override files.
 - Update docs/changelogs when behavior changes, especially for Ghostty,
   AeroSpace, tmux, and keybindings.
+- Update `docs/shortcut-reference.md` whenever a Logitech Options+ profile,
+  BetterTouchTool trigger, Wispr Flow shortcut, or related Karabiner remap
+  changes. Keep it focused on current behavior and put implementation history
+  in the specialized setup guides.
+- Update the matching provider profile under `docs/transcription/` whenever a
+  transcription application's defaults, custom shortcuts, device mappings, or
+  switch contract changes. Label built-in defaults and custom mappings
+  separately; do not infer that an entry is custom merely because it appears
+  under an application's user preferences.
+- Keep `mac/.local/bin/trx`, `docs/transcription/README.md`, and the provider
+  profiles synchronized. A provider switch must update the two global BTT
+  triggers and the `c195` assignment in every Logitech profile listed by the
+  live database, verify the result, and preserve transactional rollback.
+- Treat transcription providers that share a global shortcut as mutually
+  exclusive until a dispatcher is implemented. Document tap-only versus
+  hold-capable device paths rather than assuming a generated keystroke
+  preserves physical press duration.
 - For Stow changes, run `stow -n -v mac` before `stow mac`.
 - For Ghostty edits, run `ghostty +validate-config --config-file ...`.
 - For AeroSpace edits, run `aerospace reload-config`.
