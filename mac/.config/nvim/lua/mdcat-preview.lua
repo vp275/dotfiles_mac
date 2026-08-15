@@ -55,16 +55,6 @@ local function open_preview(renderer, executable, cursorline, build_command)
   vim.wo.signcolumn = "no"
   vim.wo.cursorline = cursorline
   vim.wo.cursorlineopt = "line"
-  if cursorline then
-    vim.api.nvim_set_hl(0, "MarkdownPreviewCursorLine", {
-      bg = "#00D2BE",
-      fg = "#0A0A0A",
-    })
-    local winhighlight = vim.wo.winhighlight
-    local cursorline_highlight = "CursorLine:MarkdownPreviewCursorLine"
-    vim.wo.winhighlight = winhighlight == "" and cursorline_highlight
-      or winhighlight .. "," .. cursorline_highlight
-  end
   vim.keymap.set("n", "q", "<cmd>tabclose<cr>", {
     buffer = buf,
     desc = "Close Markdown preview",
