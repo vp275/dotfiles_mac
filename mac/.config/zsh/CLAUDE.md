@@ -88,8 +88,12 @@ it comes from local shell config or another installed command.
 
 ## Prompt Configuration
 
-Powerlevel10k is configured via `mac/.p10k.zsh`, stowed to `~/.p10k.zsh`, and
-uses upstream rainbow color indexes.
+Powerlevel10k is configured via `mac/.p10k.zsh`, stowed to `~/.p10k.zsh`. The
+current wizard-generated setup uses the Lean style: one compact line,
+transparent segment backgrounds, space separators, icons before content, and
+transient prompts. The left side shows directory, Git status, and the prompt
+character; the OS icon is disabled. The right side retains status and
+environment/context segments, while the clock is disabled.
 
 ## Syntax Highlighting
 
