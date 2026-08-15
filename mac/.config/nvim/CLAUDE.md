@@ -104,6 +104,7 @@ to open a selected file and return to Neovim.
 | `<leader>mc` | Preview the current Markdown file as a Pandoc grid |
 | `<leader>mg` | Preview the current Markdown file with Glow |
 
+Twilight remains disabled. Use `<leader>z` to toggle zen mode manually.
 
 ### Claude/GLM tmux integration
 

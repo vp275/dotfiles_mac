@@ -14,7 +14,7 @@ return {
         },
       },
       plugins = {
-        twilight = { enabled = true },
+        twilight = { enabled = false },
       },
     },
   },
