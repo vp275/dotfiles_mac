@@ -1,5 +1,20 @@
 # Ghostty Config Changelog
 
+## 2026-08-19 - Return to Nightfox Carbonfox
+
+- Restored the tracked Carbonfox export as the active Ghostty theme.
+- Removed transparency and blur, reduced the font size to `18`, and set a
+  transparent title bar with `12`-point horizontal and `10`-point vertical padding.
+
+## 2026-08-16 - Switch to Atom One Dark
+
+- Replaced Carbonfox with Ghostty's built-in `Atom One Dark` theme.
+
+## 2026-08-16 - Use the Nightfox Carbonfox theme
+
+- Added Nightfox's maintained Carbonfox Ghostty export at
+  `themes/carbonfox` and set it as the active Ghostty theme.
+
 ## 2026-08-05 - Add background blur
 
 - Enabled Ghostty's recommended blur intensity of `20` while keeping the

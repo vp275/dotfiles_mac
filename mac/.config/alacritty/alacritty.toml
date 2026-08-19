@@ -1,11 +1,14 @@
 # Alacritty config for macOS - Dropdown terminal
 # Use Ghostty for main terminal work, Alacritty for quick floating access
 
+[general]
+import = ["~/.config/alacritty/themes/carbonfox.toml"]
+
 [env]
 TERM = "xterm-256color"
 
 [font]
-size = 22
+size = 20
 
 [font.normal]
 family = "JetBrainsMono Nerd Font Mono"
@@ -24,18 +27,18 @@ family = "JetBrainsMono Nerd Font Mono"
 style = "Italic"
 
 [window]
-opacity = 0.9
+opacity = 0.93
 blur = true
-decorations = "Full"
+decorations = "Buttonless"
 dynamic_padding = true
 
 [window.padding]
 x = 12
-y = 16
+y = 10
 
-[window.dimensions]
-columns = 120
-lines = 25
+#[window.dimensions]
+#columns = 120
+#lines = 25
 
 # Option key sends escape sequences (Meta)
 [keyboard]

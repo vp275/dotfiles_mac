@@ -153,6 +153,9 @@ export VISUAL='nvim'
 alias szsh='source ~/.zshrc'
 alias hetzner='ssh myserver'
 
+# List project-scoped Codex skills from the project root.
+alias project-skills='find .agents/skills -name SKILL.md -print 2>/dev/null'
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export TERM="xterm-256color"
@@ -273,3 +276,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # omnara
 path=("/Users/vp/.omnara/bin" $path)
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/mac/.p10k.zsh.
+[[ ! -f ~/.dotfiles/mac/.p10k.zsh ]] || source ~/.dotfiles/mac/.p10k.zsh

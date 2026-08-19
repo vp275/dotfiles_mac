@@ -2,9 +2,8 @@
 
 Ghostty terminal emulator configuration for macOS.
 
-**Current state (2026-06-16):** stripped to a minimal, near-stock config to use
-Ghostty's out-of-the-box behavior (native tabs/splits, native smooth scrollback,
-native Cmd shortcuts). The previous tmux-centric setup (Cmd→Meta routing +
+**Current state (2026-08-19):** a compact native Ghostty configuration using
+the Nightfox Carbonfox theme. The previous tmux-centric setup (Cmd→Meta routing +
 auto-launch tmux) is archived. See `docs/CHANGELOG.md` for the full before/after
 and restore instructions; the old config is at `docs/config.original-2026-06-16.bak`.
 
@@ -17,13 +16,15 @@ ghostty +show-config  # Show effective config vs defaults
 
 ## Current Settings
 
-The live config is intentionally small:
+The live config is intentionally compact:
 
-- `background-opacity = 0.95` — slight transparency
-- `background-blur = 20` — blur translucent content behind the window
+- `theme = Carbonfox`
+- `background-opacity = 1`
+- `background-blur` is disabled
 - `font-family = JetBrainsMono Nerd Font Mono`
-- `font-size = 19`
-- `macos-titlebar-style = native`
+- `font-size = 18`
+- `macos-titlebar-style = transparent`
+- `window-padding-x = 12`, `window-padding-y = 10`
 
 The config file is the source of truth; do not trust exact values written here.
 

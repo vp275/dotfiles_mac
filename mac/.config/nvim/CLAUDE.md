@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Neovim configuration using lazy.nvim and the Kanagawa Wave colorscheme.
+Neovim configuration using lazy.nvim and the Nightfox colorscheme.
 
 ## Plugin Manager
 
@@ -26,7 +26,7 @@ return {
 
 | File | Plugin | Purpose |
 |------|--------|---------|
-| `colorscheme.lua` | `rebelot/kanagawa.nvim` | Kanagawa Wave colorscheme |
+| `colorscheme.lua` | `EdenEast/nightfox.nvim` | Nightfox colorscheme |
 | `lualine.lua` | `nvim-lualine/lualine.nvim` | Status line |
 | `render-markdown.lua` | `MeanderingProgrammer/render-markdown.nvim` | Renders markdown with formatting |
 | `render-markdown.lua` | `nvim-treesitter/nvim-treesitter` | Syntax parsing |
@@ -126,8 +126,8 @@ Twilight remains disabled. Use `<leader>z` to toggle zen mode manually.
 
 ## Theme
 
-`init.lua` explicitly loads Kanagawa's warm dark Wave variant:
+`init.lua` explicitly loads Nightfox's Carbonfox dark variant:
 
 ```lua
-vim.cmd("colorscheme kanagawa-wave")
+vim.cmd("colorscheme carbonfox")
 ```

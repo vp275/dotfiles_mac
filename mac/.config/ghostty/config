@@ -2,11 +2,14 @@
 # Stripped to near-defaults on 2026-06-16 to use Ghostty's out-of-the-box feel.
 # See docs/CHANGELOG.md for the full before/after and how to restore the old setup.
 
-background-opacity = 0.95
-background-blur = 20
+theme = Carbonfox
+background-opacity = 1
+# background-blur =
 font-family = JetBrainsMono Nerd Font Mono
-font-size = 19
-macos-titlebar-style = native
+font-size = 18
+macos-titlebar-style = transparent
+window-padding-x = 12
+window-padding-y = 10
 
 # Open ranger from the current shell prompt.
 keybind = super+r=text:\x15ranger\r

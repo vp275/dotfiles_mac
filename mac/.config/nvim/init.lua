@@ -33,5 +33,5 @@ vim.opt.textwidth = 80
 -- Load plugins
 require("lazy").setup("plugins")
 
--- Use Kanagawa's warm dark Wave variant.
-vim.cmd("colorscheme kanagawa-wave")
+-- Use Nightfox's Carbonfox dark variant.
+vim.cmd("colorscheme carbonfox")
