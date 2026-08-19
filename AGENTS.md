@@ -26,6 +26,7 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 |   |-- .gitconfig
 |   |-- .fzf.zsh
 |   |-- .local/bin/
+|   |-- Library/LaunchAgents/
 |   `-- .config/
 |       |-- zsh/
 |       |-- nvim/
@@ -34,7 +35,6 @@ Codex-facing guide for working in `/Users/vp/.dotfiles`.
 |       |-- aerospace/
 |       |-- ghostty/
 |       |-- alacritty/
-|       |-- karabiner/
 |       |-- linearmouse/
 |       |-- git/
 |       |-- ranger/
@@ -60,6 +60,7 @@ Important app docs:
 - `mac/.config/aerospace/AGENTS.md`
 - `mac/.config/ghostty/CLAUDE.md`
 - `mac/.config/ghostty/AGENTS.md`
+- `docs/airpods-banner-dismiss.md`
 
 When editing inside a subdirectory with its own `AGENTS.md`, read that file
 first and treat it as more specific than this root guide.
@@ -125,6 +126,8 @@ Machine-specific files are intentionally gitignored:
 - Neovim loads Kanagawa Wave from `rebelot/kanagawa.nvim`.
 - The tracked `.zshrc` does not define `glm`; verify local shell config before
   assuming the command exists.
+- AirPods smart-routing banner suppression is still under investigation. The
+  unified-log watcher was removed after idle testing proved it reacts too late.
 
 ## Color defaults
 
@@ -186,6 +189,20 @@ AeroSpace:
 - Keep menu-bar/popover exclusions above the catch-all.
 - Update `CHANGELOG.md` for meaningful behavior changes.
 
+AirPods banner investigation:
+
+- Main research log: `docs/airpods-banner-dismiss.md`.
+- Preserve automatic AirPods switching while testing suppression candidates.
+- These notifications use `Essential` urgency. Notification Center settings
+  and per-app Focus rules do not block them.
+- Do not restore the unified-log watcher. Its events arrive after Control
+  Center has already created the banner.
+- Do not use `SystemBanner`'s
+  `removeSmartRoutingForEvent:` API. Calls from an ordinary ad-hoc process are
+  ignored because it is not an Apple platform client.
+- Do not claim a solution until the user confirms that both Connected and
+  ReverseRoute banners are absent during natural idle cycles.
+
 ## Editing And Verification Checklist
 
 - Use `rg`/`rg --files --hidden` for search.
@@ -195,22 +212,21 @@ AeroSpace:
 - Update docs/changelogs when behavior changes, especially for Ghostty,
   AeroSpace, tmux, and keybindings.
 - Update `docs/shortcut-reference.md` whenever a Logitech Options+ profile,
-  BetterTouchTool trigger, Wispr Flow shortcut, or related Karabiner remap
-  changes. Keep it focused on current behavior and put implementation history
-  in the specialized setup guides.
-- Update the matching provider profile under `docs/transcription/` whenever a
-  transcription application's defaults, custom shortcuts, device mappings, or
-  switch contract changes. Label built-in defaults and custom mappings
-  separately; do not infer that an entry is custom merely because it appears
-  under an application's user preferences.
-- Keep `mac/.local/bin/trx`, `docs/transcription/README.md`, and the provider
-  profiles synchronized. A provider switch must update the two global BTT
-  triggers and the `c195` assignment in every Logitech profile listed by the
-  live database, verify the result, and preserve transactional rollback.
-- Treat transcription providers that share a global shortcut as mutually
-  exclusive until a dispatcher is implemented. Document tap-only versus
-  hold-capable device paths rather than assuming a generated keystroke
-  preserves physical press duration.
+  BetterTouchTool trigger, or Spokenly shortcut changes. Keep it focused on
+  current behavior and put implementation history in the specialized setup
+  guides.
+- Update `docs/transcription/spokenly/README.md` whenever Spokenly defaults,
+  custom shortcuts, device mappings, or helper behavior changes. Label
+  built-in defaults and custom mappings separately; do not infer that an entry
+  is custom merely because it appears under application preferences.
+- Keep the trackpad, Magic Mouse, and MX Master Spokenly routes synchronized
+  through `Spokenly Toggle.app`. MacBook Fn remains a direct push-to-talk
+  control. The Ducky Command, Option, and Caps mapping is owned by the native
+  macOS preference `com.apple.keyboard.modifiermapping.1241-661-0`; do not add
+  a replacement standalone Right Option mechanism.
+- When testing AirPods banner suppression, test both Connected and Moved to
+  iPhone behavior and confirm that Control Center does not log a later
+  `show smart routing` event.
 - For Stow changes, run `stow -n -v mac` before `stow mac`.
 - For Ghostty edits, run `ghostty +validate-config --config-file ...`.
 - For AeroSpace edits, run `aerospace reload-config`.

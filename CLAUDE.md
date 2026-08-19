@@ -39,6 +39,7 @@ tmux source-file ~/.config/tmux/tmux.conf
 |   |-- .gitconfig          # Git config
 |   |-- .fzf.zsh            # FZF shell integration
 |   |-- .local/bin/         # Helper scripts
+|   |-- Library/LaunchAgents/ # Per-user background services
 |   `-- .config/
 |       |-- zsh/
 |       |-- nvim/
@@ -47,7 +48,6 @@ tmux source-file ~/.config/tmux/tmux.conf
 |       |-- aerospace/
 |       |-- ghostty/
 |       |-- alacritty/
-|       |-- karabiner/
 |       |-- linearmouse/
 |       |-- git/
 |       |-- ranger/
@@ -70,6 +70,7 @@ Each app has its own docs with keybindings, settings, and gotchas:
 - `mac/.config/aerospace/AGENTS.md` - Agent notes for AeroSpace edits
 - `mac/.config/ghostty/CLAUDE.md` - Current native/minimal Ghostty setup
 - `mac/.config/ghostty/AGENTS.md` - Agent notes for Ghostty edits
+- `docs/airpods-banner-dismiss.md` - AirPods system-banner investigation
 
 ## Key Architecture
 
@@ -104,6 +105,12 @@ Meta bindings available for terminals that send Meta.
 `.zshrc` defines aliases such as `cl`, `cld`, `clds`, `cldr`, `cldc`, `cldp`,
 and `ccv*`. If `glm` is available, it comes from local shell config or another
 installed command, not from the tracked `.zshrc`.
+
+**AirPods banners**: Suppression is still under investigation. The old
+unified-log watcher was removed because its events arrive after Control Center
+has already created the Essential-urgency banner. Keep findings in
+`docs/airpods-banner-dismiss.md`, preserve automatic switching, and require the
+user to confirm both routing directions before calling a candidate solved.
 
 ## Color defaults
 
