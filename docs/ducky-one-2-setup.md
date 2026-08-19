@@ -10,15 +10,23 @@ This is reversed from Mac layout where Command should be next to the spacebar.
 
 ## Solution
 
-Added device-specific modifier swap in Karabiner-Elements (`mac/.config/karabiner/karabiner.json`):
+The Ducky-specific Command, Option, and Caps mappings are owned by native
+macOS keyboard preferences, serialized under
+`com.apple.keyboard.modifiermapping.1241-661-0`. No additional keyboard
+remapper is required for the Ducky or any other keyboard.
 
-- Left/Right Option ↔ Left/Right Command (for Ducky only, vendor 1241, product 661)
+Other keyboards, including the MacBook built-in keyboard, are unaffected by
+the Ducky-specific preference.
 
-Other keyboards (including MacBook built-in) are unaffected.
+## Spokenly keyboard behavior
 
-## Other Settings
+Standalone Right Option is not a Spokenly toggle. It remains a native modifier
+in keyboard chords, and no repository-level standalone Right Option mechanism
+is configured. The trackpad, Magic Mouse, and MX Master routes still use
+`Spokenly Toggle.app`. MacBook Fn remains Spokenly's push-to-talk shortcut.
 
-- Caps Lock → Escape (global, applies to all keyboards)
+The Ducky hardware Fn key is firmware-only and is not exposed to macOS, so the
+Ducky has no Fn push-to-talk path.
 
 ## Function Row
 
@@ -39,9 +47,7 @@ mapping on login and every 30 seconds so it survives keyboard replugging.
   keyboard so it does not overwrite the Ducky media mapping. The helper keeps
   its legacy filename, but F4 no longer controls Proton VPN.
 - F8 → the same listener calls `~/.local/bin/aerospace-toggle-enabled` to
-  kill/relaunch the AeroSpace process. Starting prefers
-  `~/Applications/AeroSpace Sticky.app`; `/Applications/AeroSpace.app` remains
-  the manual rollback.
+  kill/relaunch the official `/Applications/AeroSpace.app` process.
   A LaunchAgent at
   `~/Library/LaunchAgents/com.vp.ducky-f8-aerospace-listener.plist` keeps the
   listener running.
@@ -56,20 +62,68 @@ Herdr uses `Ctrl+B` as its canonical prefix in
 
 - Ducky One 2: press physical `Ctrl+B`. The Ducky Fn key cannot be used
   because its firmware does not expose that key to macOS.
-- MacBook keyboard: BetterTouchTool key sequence
-  `Ghostty Fn to Ctrl+B - Herdr prefix` translates a press and release of the
-  Fn/Globe key into `Ctrl+B`.
+- MacBook keyboard: the native
+  `~/.local/bin/macbook-fn-herdr-listener`, kept running by
+  `~/Library/LaunchAgents/com.vp.macbook-fn-herdr-listener.plist`, reads the
+  built-in keyboard's raw Fn/Globe HID value. It emits `Ctrl+B` only for a
+  standalone Fn tap of no more than 0.35 seconds when either Ghostty
+  (`com.mitchellh.ghostty`) or Alacritty (`org.alacritty`) is frontmost at both
+  press and release. It passes all physical input through unchanged.
 
-The BTT trigger action checks that the frontmost application bundle identifier
-is `com.mitchellh.ghostty` before sending `Ctrl+B`. The modifier-only key
-sequence is listed in BTT's Global section, but its action emits no key outside
-Ghostty. Its current trigger UUID is
-`3D18BB81-90D9-4CD9-BED3-9B46FBB2F683`.
+The raw input source is the built-in Apple keyboard's IOHID element, vendor
+`0x05AC`, product `0x0342`, usage page `0xFF`, usage `0x03`. It reports explicit
+down and up values. A separate listen-only event tap invalidates the tap if
+another key, modifier, or system-defined media event participates, including a
+modifier held before Fn is pressed.
+
+The former BetterTouchTool trigger, `Ghostty Fn to Ctrl+B - Herdr prefix`
+(`3D18BB81-90D9-4CD9-BED3-9B46FBB2F683`), is disabled but preserved as the
+immediate rollback path. It must remain disabled while the native listener is
+active so one Fn tap cannot emit two `Ctrl+B` prefixes.
 
 macOS **Press Globe key to** is set to **Do Nothing**
 (`com.apple.HIToolbox AppleFnUsageType = 0`) so the native Globe action does not
-compete with BTT. This means the MacBook Fn/Globe key does nothing outside
-Ghostty when pressed by itself.
+compete with the listener's terminal-scoped mapping. This means the MacBook
+Fn/Globe key does nothing outside Ghostty and Alacritty when pressed by itself.
 
 The Ducky-specific function-row mappings remain unchanged. In particular,
 Ducky F12 is still Volume Up rather than a Herdr prefix.
+
+### Listener Files and Permissions
+
+| Purpose | Path or label |
+| --- | --- |
+| Tracked Swift source | `~/.dotfiles/mac/.local/bin/macbook-fn-herdr-listener.swift` |
+| Compile/exec wrapper | `~/.local/bin/macbook-fn-herdr-listener` |
+| Compiled binary | `~/Library/Caches/dotfiles/macbook-fn-herdr-listener` |
+| LaunchAgent label | `com.vp.macbook-fn-herdr-listener` |
+| Runtime log | `~/Library/Logs/macbook-fn-herdr-listener.log` |
+
+The wrapper compiles into the stable cache path, ad-hoc signs the binary with
+identifier `com.vp.macbook-fn-herdr-listener`, and executes it. System Settings
+must grant the compiled binary both Input Monitoring and Device Control and
+Data Access. Grant the cache binary itself, not the shell wrapper. After a
+recompile, macOS may retain a stale path-based permission record. If the log
+shows `result=-536870174` or an Accessibility warning, remove the old
+same-named entry, add the exact compiled binary again in both panes, and restart
+the LaunchAgent.
+
+### Verification and Rollback
+
+The quick-tap path was physically verified in Ghostty on 2026-08-15 and in
+Alacritty on 2026-08-16. In both terminals, one quick Globe/Fn tap produced
+exactly one `Ctrl+B`; the Alacritty test also recorded
+`allowedTerminal=true` followed by one `Fn tap triggered Ctrl+B` log entry.
+
+Useful checks:
+
+```sh
+launchctl print gui/$(id -u)/com.vp.macbook-fn-herdr-listener
+tail -f ~/Library/Logs/macbook-fn-herdr-listener.log
+defaults read com.apple.HIToolbox AppleFnUsageType
+```
+
+For rollback, unload `com.vp.macbook-fn-herdr-listener`, restore
+`AppleFnUsageType` to `3`, and re-enable only preserved BTT trigger
+`3D18BB81-90D9-4CD9-BED3-9B46FBB2F683` after BTT is available. Do not change
+any unrelated BTT trigger.

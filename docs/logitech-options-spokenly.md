@@ -1,17 +1,17 @@
-# Logitech Options+ and Transcription Setup
+# Logitech Options+ and Spokenly Setup
 
-Last audited: 2026-08-01
+Last audited: 2026-08-18
 
 ## Goal
 
 Keep the MX Master 3S controls predictable across Codex, AI apps, terminals,
-browsers, Wispr Flow, and Spokenly.
+browsers, and Spokenly.
 
 The important split:
 
-- Chat/terminal-like apps, including Codex: wheel click sends `Enter`.
+- Chat and terminal-like apps, including Codex: wheel click sends `Enter`.
 - Browsers: wheel click stays a real middle click.
-- Wispr Flow hands-free should not steal browser back/middle-click behavior.
+- The auxiliary/thumb button opens `Spokenly Toggle.app` in every profile.
 
 ## Source of Truth
 
@@ -23,21 +23,6 @@ Logitech Options+ stores its profile state in:
 
 The real settings are stored as one JSON blob in SQLite table `data`, column
 `file`.
-
-Wispr Flow stores shortcuts in:
-
-```text
-~/Library/Application Support/Wispr Flow/config.json
-```
-
-The authoritative Wispr shortcuts are under:
-
-```text
-prefs.user.shortcuts
-```
-
-`prefs.cache.splitKeybinds` is a derived/cache view and can be rebuilt by
-Wispr.
 
 ## MX Master 3S Slot IDs
 
@@ -54,7 +39,7 @@ Useful slots:
 | `mx-master-3s-2b034_c82` | Wheel click / middle button | `Enter` in terminal-like apps and Codex, `MB3` in browsers. |
 | `mx-master-3s-2b034_c83` | Back button | Native Back in browsers/default; `Ctrl+Tab` in Codex. |
 | `mx-master-3s-2b034_c86` | Forward button | Native Forward in browsers/default; `Cmd+K` in Codex. |
-| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Provider-specific dictation action in every current Logitech profile. For Spokenly, the Smart Action opens a background helper that calls `spokenly://toggle`. |
+| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Smart Action `Spokenly Hands-Free` in every current Logitech profile. It opens a background helper that calls `spokenly://toggle`. |
 | `mx-master-3s-2b034_c196` | Gesture/top button | App navigation gesture card. |
 
 ## Current Logitech Profile Benchmark
@@ -77,8 +62,8 @@ Generated from the live Logitech Options+ database and rechecked on 2026-08-02.
 | Helium | `net.imput.helium` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
 | Sioyek | `info.sioyek.sioyek` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Right Arrow | Left Arrow |
 
-`trx` assigns the provider-specific thumb action directly in every Logitech
-profile listed by the live database. This avoids profile inheritance gaps.
+Every current profile assigns the thumb button directly to the Spokenly Smart
+Action. This avoids profile inheritance gaps.
 
 ### Wheel Click
 
@@ -182,30 +167,6 @@ See the related BTT guide for trigger details and troubleshooting:
 
 [Codex sidebar organization shortcut](btt/README.md#codex-sidebar-organization-shortcut)
 
-## Current Wispr Flow Shortcut Benchmark
-
-Wispr shortcuts currently relevant to this setup are shown below. The complete
-effective list, with built-in and custom entries classified separately, lives
-in the [Wispr Flow input profile](transcription/wispr-flow/README.md).
-
-| Shortcut code | Wispr action | Origin |
-| --- | --- | --- |
-| `61` | `popo` / hands-free; right Option key | Custom |
-| `63` | `ptt` | Built-in default |
-
-Important absence:
-
-- `4098 => enter_rebind` is intentionally removed.
-- `4099 => popo` and `4100 => popo` are intentionally removed; the legacy raw
-  Mouse 4 and Mouse 5 fallbacks are no longer needed.
-- `65535 => popo` is intentionally removed. The Logitech aux/thumb button is
-  now provider-specific and currently routes to Spokenly through a Logitech
-  Smart Action.
-- Physical middle click should not be globally bound in Wispr.
-
-Why: when Wispr globally owns physical middle click, browser middle-click stops
-being a normal browser middle-click.
-
 ## Related BetterTouchTool Docs
 
 BetterTouchTool trackpad gestures and future Magic Mouse experiments are
@@ -213,66 +174,30 @@ documented separately:
 
 [BetterTouchTool gesture setup](btt/README.md)
 
-The provider-specific input mapping and implemented `trx` switch contract are
-documented here:
+## Input Ownership Lessons
 
-[Wispr Flow transcription input profile](transcription/wispr-flow/README.md)
+Do not route the Logitech auxiliary/thumb button through generated keyboard
+chords or BetterTouchTool. Physical tests showed that Logitech-generated F20,
+Hyper, `Ctrl+Shift+B`, and modified mouse clicks did not enter BTT's trigger
+pipeline reliably.
 
-## Lessons Learned
+Keep each input with one owner:
 
-### Do Not Use Logitech-Generated Chords As BTT Transcription Triggers
+- Logitech Options+ owns the MX Master auxiliary/thumb button and opens
+  `Spokenly Toggle.app`.
+- BTT owns the trackpad and Magic Mouse Spokenly gestures.
+- Browser wheel click remains native `MB3`.
+- Chat and terminal wheel click sends `Enter` directly from Logitech Options+.
+- BTT-generated Right Option is not a Spokenly-compatible replacement for the
+  helper route.
 
-We tried mapping wheel click in Codex to a weird keyboard chord and then making
-Wispr listen for that chord. It did not reliably trigger Wispr.
+### Codex And Browser Focus
 
-Better pattern:
+Codex uses a plain `Enter` keystroke for wheel click. No mouse click reaches
+Codex first, so focus is not moved before the send action.
 
-- If the target app needs "send", set Logi wheel click directly to `Enter`.
-- If the target app needs browser behavior, keep Logi wheel click as `MB3`.
-- For Wispr Flow, make the transcription thumb button emit Right Option
-  directly. Wispr treats Right Option (`61`) as `popo`. Run `trx wispr` to
-  install that assignment in every current Logitech profile. Run
-  `trx spokenly` to restore the `Spokenly Hands-Free` Smart Action in those
-  profiles.
-- Do not claim that a Logitech-generated F20, Hyper chord, `Ctrl+Shift+B`, or
-  modified mouse click can be routed through BTT from `c195`. None reached BTT
-  during physical testing.
-- Do not claim that BTT-generated Right Option is Spokenly-compatible. Spokenly
-  ignored both BTT's generic keyboard action and its dedicated modifier action.
-
-### Codex Focus Problem
-
-Historical note: this was the earlier layout before the later Codex button
-swaps. The current Codex profile now uses wheel click (`c82`) for `Enter`,
-thumb (`c195`) for the current Spokenly Smart Action, back (`c83`) for `Ctrl+Tab`, and
-forward (`c86`) for `Cmd+K`.
-
-Original bug:
-
-- Wispr `Middle Click -> Press Enter` only worked when the cursor was inside
-  the Codex composer.
-- Clicking elsewhere in Codex moved focus before Wispr sent Enter.
-
-Earlier fix:
-
-- In the Codex Logi profile, set wheel click (`c82`) to a plain `Enter`
-  keystroke instead of a physical middle click.
-- This means no mouse click reaches Codex, so focus is not stolen.
-
-### Browser Middle-Click Problem
-
-Original bug:
-
-- Helium/browser middle-click did not act like browser middle-click.
-
-Cause:
-
-- Wispr had global physical middle click (`4098`) bound to `enter_rebind`.
-
-Fix:
-
-- Remove Wispr `4098 => enter_rebind`.
-- Keep browser Logi profiles as real `MB3`.
+Browser profiles keep wheel click as real `MB3`, preserving background-tab and
+other browser-native middle-click behavior.
 
 ### YouTube PWA / Brave App Gotcha
 
@@ -332,26 +257,6 @@ for pid in root.get('profile_keys', []):
 PY
 ```
 
-### Wispr Shortcut Summary
-
-```bash
-python3 - <<'PY'
-import json, os
-
-path = os.path.expanduser('~/Library/Application Support/Wispr Flow/config.json')
-with open(path) as f:
-    data = json.load(f)
-
-print('prefs.user.shortcuts')
-for key, value in sorted(data.get('prefs', {}).get('user', {}).get('shortcuts', {}).items()):
-    print(key, '=>', value)
-
-print('\nprefs.cache.splitKeybinds')
-for binding in data.get('prefs', {}).get('cache', {}).get('splitKeybinds') or []:
-    print(binding)
-PY
-```
-
 ## Safe Editing Notes
 
 Before editing Logitech settings manually:
@@ -367,11 +272,4 @@ Example backup path used during debugging:
 
 ```text
 work/logi-backups/
-work/wispr-backups/
 ```
-
-When changing Wispr shortcuts:
-
-- Patch `prefs.user.shortcuts`.
-- Patch `prefs.cache.splitKeybinds` only as a cache convenience.
-- Restart Wispr and re-check because cache-only edits can be discarded.

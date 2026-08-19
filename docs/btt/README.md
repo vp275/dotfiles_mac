@@ -1,6 +1,6 @@
 # BetterTouchTool Gesture Setup
 
-Last audited: 2026-08-01
+Last audited: 2026-08-18
 
 ## Goal
 
@@ -32,8 +32,8 @@ The current setup uses BTT for MacBook trackpad gestures and keyboard adapters:
 - 3-finger click is disabled and reserved for future use.
 - Ducky One 2 F4 passes through to BTT. F8 is handled outside BTT by
   `~/.local/bin/ducky-f8-aerospace-listener`, which calls
-  `~/.local/bin/aerospace-toggle-enabled`. The AeroSpace toggle prefers
-  `~/Applications/AeroSpace Sticky.app` and keeps the released app as rollback.
+  `~/.local/bin/aerospace-toggle-enabled`, which toggles the official
+  `/Applications/AeroSpace.app`.
   A LaunchAgent keeps the F8 listener running.
 - MacBook built-in F4 is first remapped from Apple's Spotlight/Search HID usage
   to normal F4 by `~/.local/bin/macbook-f4-proton-key`, then recognized by BTT.
@@ -41,13 +41,18 @@ The current setup uses BTT for MacBook trackpad gestures and keyboard adapters:
   Ducky media-key mappings. The helper retains its legacy filename even though
   F4 no longer controls Proton VPN.
 
-Related Logitech/Wispr docs live here:
+The MacBook Globe/Fn Herdr prefix is no longer owned by BTT. A native listener
+reads explicit Fn down/up values from the built-in keyboard and emits `Ctrl+B`
+only for a quick standalone Fn tap in Ghostty or Alacritty. BTT trigger
+`3D18BB81-90D9-4CD9-BED3-9B46FBB2F683` is disabled and retained only as an
+immediate rollback path. See
+[the keyboard setup](../ducky-one-2-setup.md#herdr-prefix-across-keyboards)
+for the listener's timing, app scope, and LaunchAgent.
 
-[Logitech Options+ and Wispr Flow setup](../logitech-options-wispr-flow.md)
+Related input docs:
 
-[Wispr Flow transcription input profile](../transcription/wispr-flow/README.md)
-
-[Spokenly transcription input profile](../transcription/spokenly/README.md)
+- [Logitech Options+ and Spokenly setup](../logitech-options-spokenly.md)
+- [Spokenly transcription profile](../transcription/spokenly/README.md)
 
 ## Source of Truth
 
@@ -57,10 +62,10 @@ BetterTouchTool is installed at:
 /Applications/BetterTouchTool.app
 ```
 
-Current BTT database:
+The live trigger database is under:
 
 ```text
-~/Library/Application Support/BetterTouchTool/btt_data_store.version_6_687_build_2026073101
+~/Library/Application Support/BetterTouchTool/btt_data_store.version_*
 ```
 
 Preferences plist:
@@ -69,13 +74,64 @@ Preferences plist:
 ~/Library/Preferences/com.hegenberg.BetterTouchTool.plist
 ```
 
-BTT's bundled trigger reference is useful when checking gesture IDs:
+BTT's `get_triggers` AppleScript command is the quickest live audit path. Its
+bundled trigger reference is useful when checking gesture IDs:
 
 ```text
 /Applications/BetterTouchTool.app/Contents/Resources/trigger-definitions.mdx
 ```
 
-BTT is configured as a login item so the gestures are available after restart.
+## Native Globe/Fn Herdr Adapter
+
+The native adapter owns only this former BTT behavior:
+
+```text
+MacBook Globe/Fn quick tap in Ghostty or Alacritty
+  -> raw built-in keyboard Fn down/up
+  -> native listener validation
+  -> one synthetic Ctrl+B
+  -> Herdr prefix
+```
+
+The listener uses the built-in Apple keyboard's IOHID element, vendor `0x05AC`,
+product `0x0342`, usage page `0xFF`, usage `0x03`. IOHID supplies explicit `1`
+and `0` values for Fn down and up, avoiding ambiguous `flagsChanged` events when
+the macOS bare-Globe action is disabled. A listen-only Core Graphics event tap
+cancels the candidate tap when another key, modifier, or system-defined media
+event participates. Modifiers already held at Fn-down are checked separately.
+
+The prefix is emitted only when all of these conditions hold:
+
+- Ghostty or Alacritty is frontmost at both Fn-down and Fn-up.
+- Fn is released within `0.35` seconds.
+- No other key or modifier participates.
+
+Tracked and live interfaces:
+
+| Purpose | Path or label |
+| --- | --- |
+| Swift source | `~/.dotfiles/mac/.local/bin/macbook-fn-herdr-listener.swift` |
+| Compile/exec wrapper | `~/.local/bin/macbook-fn-herdr-listener` |
+| Compiled binary | `~/Library/Caches/dotfiles/macbook-fn-herdr-listener` |
+| LaunchAgent | `com.vp.macbook-fn-herdr-listener` |
+| LaunchAgent plist | `~/Library/LaunchAgents/com.vp.macbook-fn-herdr-listener.plist` |
+| Runtime log | `~/Library/Logs/macbook-fn-herdr-listener.log` |
+
+The compiled binary, not the shell wrapper, must be enabled in both **Input
+Monitoring** and **Device Control and Data Access** in System Settings. If a
+source change recompiles the binary and macOS rejects the new signature, remove
+the stale same-named permission entry, add the exact compiled binary path above,
+and restart the LaunchAgent.
+
+The quick-tap path was physically verified in Ghostty on 2026-08-15 and in
+Alacritty on 2026-08-16. In both terminals, one quick Globe/Fn tap produced
+exactly one `Ctrl+B`; the Alacritty test also logged
+`allowedTerminal=true` followed by exactly one `Fn tap triggered Ctrl+B` entry.
+
+Rollback keeps unrelated BTT settings untouched: stop
+`com.vp.macbook-fn-herdr-listener`, restore `AppleFnUsageType` to `3`, and
+re-enable only BTT trigger `3D18BB81-90D9-4CD9-BED3-9B46FBB2F683` after BTT is
+available again.
 
 ## Current Trackpad Gestures
 
@@ -133,11 +189,9 @@ Trackpad 3-finger tap
   -> Spokenly hands-free toggle
 ```
 
-In the current Spokenly state, the trigger-level `61` / Right Option shortcut
-is absent because Spokenly rejects that synthetic modifier event. `trx wispr`
-replaces this trigger with the Right Option form that Wispr accepts, and
-`trx spokenly` restores the helper action. The UUID, global scope, and Default
-preset remain stable in both forms.
+The trigger-level `61` / Right Option shortcut is absent because Spokenly
+rejects that synthetic modifier event. The helper launch action is the current
+and permanent trackpad route.
 
 ## MX Master Spokenly Adapter
 
@@ -411,10 +465,7 @@ These are global Magic Mouse gestures. Their BTT trigger class is
 
 The TipTap Left trigger uses launch application action `49`, child action UUID
 `B78BFD97-6D98-496B-8D15-42B6701235FF`. It calls the same background Spokenly
-helper as the trackpad and MX Master. The previous trigger-level `61` / Right
-Option shortcut is absent in the current Spokenly state. `trx wispr` replaces
-the trigger with the Right Option form, and `trx spokenly` restores this helper
-action.
+helper as the trackpad and MX Master.
 
 BTT does support a dedicated Magic Mouse trigger class:
 
@@ -450,7 +501,6 @@ Possible future mappings:
 | Goal | Candidate Magic Mouse gesture | Candidate action |
 | --- | --- | --- |
 | App switcher | TipTap gesture | BTT native Application Switcher |
-| Wispr hands-free alternate | 3-finger double-tap | `61` / right Option |
 | Enter/send alternate | 2-finger double-tap or 3-finger click | `36` / Return |
 
 TipTap means keeping one or more fingers resting on the Magic Mouse surface and
@@ -463,6 +513,9 @@ normal Magic Mouse scrolling as soon as two fingers are touching the mouse
 surface. Test Magic Mouse swipes carefully before keeping them.
 
 ## Backups
+
+Some snapshot names retain `wispr` because they record historical
+configurations. They are recovery artifacts, not active input routes.
 
 Known-good backup from before testing the `useSpecialAppSwitcher` flag:
 

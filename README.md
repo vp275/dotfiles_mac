@@ -41,8 +41,8 @@ scripts/provision-server-terminal.sh
 | [tmux](mac/.config/tmux/) | `mac` | Terminal multiplexer | [CLAUDE.md](mac/.config/tmux/CLAUDE.md) |
 | [zsh](mac/.config/zsh/) | `mac` | Shell, Oh My Zsh, p10k | [CLAUDE.md](mac/.config/zsh/CLAUDE.md) |
 | [ghostty](mac/.config/ghostty/) | `mac` | Terminal emulator | [CLAUDE.md](mac/.config/ghostty/CLAUDE.md) |
+| [herdr](mac/.config/herdr/) | `mac` | Agent terminal workspace manager | - |
 | [ranger](mac/.config/ranger/) | `mac` | File manager | - |
-| [karabiner](mac/.config/karabiner/) | `mac` | Keyboard customization | - |
 | [bat](mac/.config/bat/) | `mac` | Cat clone with syntax highlighting | - |
 | [btop](mac/.config/btop/) | `mac` | System monitor | - |
 | [server terminal](docs/server-terminal.md) | `server` | Ubuntu zsh, P10K, Neovim, Ranger, bat, btop, tmux | [setup](docs/server-terminal.md) |
@@ -57,11 +57,13 @@ scripts/provision-server-terminal.sh
 |   |-- .gitconfig          # Git config
 |   |-- .fzf.zsh            # FZF shell integration
 |   |-- .taskrc             # Taskwarrior config
+|   |-- .local/bin/         # Helper scripts and background watchers
+|   |-- Library/LaunchAgents/ # Per-user background services
 |   `-- .config/
 |       |-- aerospace/      # Tiling window manager
 |       |-- ghostty/        # Terminal emulator
+|       |-- herdr/          # Agent terminal workspace manager
 |       |-- alacritty/      # Alternate terminal config
-|       |-- karabiner/      # Keyboard remapping
 |       |-- linearmouse/    # Mouse settings
 |       |-- nvim/           # Neovim + lazy.nvim plugins
 |       |-- tmux/           # tmux + TPM
@@ -89,15 +91,16 @@ scripts/provision-server-terminal.sh
 - **Vim-centric** - Evil mode in Emacs, vim keybinds everywhere
 - **Keyboard-driven** - AeroSpace WM, tmux, minimal mouse usage
 - **Terminal workflow** - Ghostty is native/minimal; tmux remains available for multiplexing
-- **Provider switching** - `trx` transactionally redirects trackpad and mouse dictation inputs between Spokenly and Wispr Flow
+- **Spokenly dictation** - Trackpad, Magic Mouse, and MX Master toggle through `Spokenly Toggle.app`; MacBook Fn remains the Spokenly push-to-talk shortcut
 
 ## Notes
 
-- [Transcription provider profiles and `trx` switcher](docs/transcription/README.md)
+- [Spokenly transcription profile](docs/transcription/spokenly/README.md)
 - [Custom Logitech, BetterTouchTool, and transcription shortcut reference](docs/shortcut-reference.md)
-- [MX Master 3S, Logitech Options+, and Wispr Flow setup](docs/logitech-options-wispr-flow.md)
+- [MX Master 3S, Logitech Options+, and Spokenly setup](docs/logitech-options-spokenly.md)
 - [BetterTouchTool gesture setup](docs/btt/README.md)
 - [Ducky One 2 macOS setup](docs/ducky-one-2-setup.md)
+- [AirPods smart-routing banner investigation](docs/airpods-banner-dismiss.md)
 
 ## Portable color defaults
 
