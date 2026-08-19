@@ -31,9 +31,8 @@ Run `aerospace reload-config` after changing `aerospace.toml`. For documentation
 
 ## Current Config Model
 
-- Launches the local `AeroSpace Sticky.app` at login through
-  `com.vp.aerospace-sticky.plist`; the config's built-in login registration is
-  disabled so the released and custom builds do not race.
+- Launches the official `/Applications/AeroSpace.app` at login through
+  `start-at-login = true`.
 - Uses flattened container normalization and opposite-orientation normalization.
 - Uses `config-version = 2`; keep `persistent-workspaces` aligned with the
   explicit workspace bindings when adding or removing one.
@@ -80,12 +79,12 @@ Rules are ordered. Specific rules must stay above broader rules, and the final c
 
 Additional rules:
 
-- `mpv`, `CodexBar`, `Codex`, Wispr Flow, CleanShot X, System Settings, and Raycast are floating only and are not moved to fixed workspaces.
-- ChatGPT stays assigned to workspace `C`. When the local sticky build is
-  active, `~/.local/bin/aerospace-sticky-pet` marks only floating ChatGPT
-  windows sticky; it is a no-op with the released AeroSpace server.
+- `mpv`, `CodexBar`, `Codex`, CleanShot X, System Settings, and Raycast are floating only and are not moved to fixed workspaces.
+- ChatGPT stays assigned to workspace `C`. AeroSpace `0.21.0-Beta` and later
+  classifies the always-on-top `com.openai.codex` Pet as an unmanaged popup,
+  so no sticky-window rule or helper is required.
 - `exec-on-workspace-change` runs `~/.local/bin/aerospace-pip-guardian auto`, which keeps known PiP cases visible without using a generic sticky-window workaround.
-- Wispr Flow, CleanShot X, System Settings, and Raycast are floated in place so utility windows stay in the workspace where they were invoked.
+- CleanShot X, System Settings, and Raycast are floated in place so utility windows stay in the workspace where they were invoked.
 - Cloudflare WARP, 1Password, `com.apple.LocalAuthentication.UIAgent`,
   `com.apple.coreservices.uiagent`, and `com.apple.ProblemReporter` are floating
   match-and-stop rules so popovers and transient system dialogs do not hit the
@@ -141,10 +140,9 @@ Service mode starts with `alt-shift-;`:
 - Add menu-bar/popover exclusions above the catch-all using `run = ['layout floating']`.
 - Keep the catch-all as the final `[[on-window-detected]]` block.
 - For significant behavior changes, update `CHANGELOG.md` and keep `CLAUDE.md`/`AGENTS.md` aligned with the real config.
-- Keep the main TOML compatible with released AeroSpace. Do not put `layout
-  sticky` directly in `aerospace.toml`; route it through
-  `aerospace-sticky-pet` so `/Applications/AeroSpace.app` remains a working
-  rollback.
+- Keep the main TOML compatible with released AeroSpace. Generic sticky
+  windows remain unsupported, but do not add a sticky workaround for the
+  Codex Pet because released AeroSpace handles it as an unmanaged popup.
 
 ## Known Doc Drift To Watch
 

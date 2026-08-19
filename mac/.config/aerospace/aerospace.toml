@@ -10,9 +10,8 @@ config-version = 2
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
 
-# Login is handled by com.vp.aerospace-sticky.plist; keep the released app's
-# built-in login item disabled so the two builds cannot race each other.
-start-at-login = false
+# Let the official AeroSpace app manage its login item.
+start-at-login = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -191,7 +190,7 @@ run = 'move-node-to-workspace B'
 # Workspace C - AI/Chat
 [[on-window-detected]]
 if.app-name-regex-substring = 'ChatGPT'
-run = ['move-node-to-workspace C', 'exec-and-forget /Users/vp/.local/bin/aerospace-sticky-pet']
+run = 'move-node-to-workspace C'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'Chrome'
@@ -291,9 +290,6 @@ if.app-name-regex-substring = 'Codex'
 run = 'layout floating'
 
 # Utility windows that should stay in the workspace where they were invoked.
-[[on-window-detected]]
-if.app-id = 'com.electron.wispr-flow.accessibility-mac-app'
-run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'pl.maketheweb.cleanshotx'
@@ -529,13 +525,3 @@ run = ['exec-and-forget /bin/bash -c "aerospace list-workspaces --monitor focuse
     down = 'volume down'
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
-
-# Route commands launched by AeroSpace through the client for whichever server
-# is active (the local sticky build or the released Homebrew build). Keep this
-# table last so later top-level settings are not interpreted as environment
-# variables by TOML.
-[exec]
-inherit-env-vars = true
-
-[exec.env-vars]
-PATH = '${HOME}/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'

@@ -24,7 +24,7 @@ follow_managed_pip() {
 
   aerospace list-windows --all --format '%{window-id}%{tab}%{app-bundle-id}%{tab}%{workspace}%{tab}%{window-title}' |
   while IFS=$'\t' read -r window_id app_id current_workspace title; do
-    [[ "$title" == 'Picture-in-picture' ]] || continue
+    [[ "${title:l}" == 'picture-in-picture' ]] || continue
 
     case "$app_id" in
       net.imput.helium)
@@ -82,7 +82,7 @@ activate_brave_if_pip_hidden() {
 
 has_managed_helium_pip() {
   aerospace list-windows --all --format '%{app-bundle-id}%{tab}%{window-title}' |
-    awk -F '\t' '$1 == "net.imput.helium" && $2 == "Picture-in-picture" { found=1 } END { print found ? "1" : "0" }'
+    awk -F '\t' 'tolower($1) == "net.imput.helium" && tolower($2) == "picture-in-picture" { found=1 } END { print found ? "1" : "0" }'
 }
 
 has_native_helium_pip() {
@@ -93,7 +93,7 @@ let windows = CGWindowListCopyWindowInfo(CGWindowListOption(arrayLiteral: .optio
 let found = windows.contains { window in
     let owner = window[kCGWindowOwnerName as String] as? String ?? ""
     let name = window[kCGWindowName as String] as? String ?? ""
-    return owner == "Helium" && name == "Picture-in-picture"
+    return owner == "Helium" && name.lowercased() == "picture-in-picture"
 }
 
 print(found ? "1" : "0")

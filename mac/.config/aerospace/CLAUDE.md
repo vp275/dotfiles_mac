@@ -10,11 +10,9 @@ aerospace list-windows --all     # Debug window assignments
 aerospace list-workspaces        # See all workspaces
 ```
 
-The daily build is `~/Applications/AeroSpace Sticky.app`, built from upstream
-PR #2083. `/Applications/AeroSpace.app` is retained as the released rollback.
-The sticky build is started at login by
-`~/Library/LaunchAgents/com.vp.aerospace-sticky.plist`; therefore
-`start-at-login` stays disabled in the TOML.
+The daily build is the official `/Applications/AeroSpace.app`, currently
+`0.21.3-Beta`. AeroSpace manages its own login item through
+`start-at-login = true`.
 
 The config uses `config-version = 2`. `persistent-workspaces` explicitly
 preserves the v1 behavior for all currently bound workspace keys.
@@ -79,12 +77,12 @@ preserves the v1 behavior for all currently bound workspace keys.
 
 ## Floating Apps
 
-These apps launch floating instead of tiled: Ghostty, Alacritty, cmux, Warp, Finder, Books, mpv, CodexBar, Codex, Wispr Flow, CleanShot X, System Settings, Raycast.
+These apps launch floating instead of tiled: Ghostty, Alacritty, cmux, Warp, Finder, Books, mpv, CodexBar, Codex, CleanShot X, System Settings, Raycast.
 
-Wispr Flow, CleanShot X, System Settings, Raycast, CoreServices UI Agent system
-prompts, and Problem Reporter crash dialogs are floated in place so utility
-windows stay in the workspace where they were invoked instead of hitting the
-empty-workspace catch-all.
+CleanShot X, System Settings, Raycast, CoreServices UI Agent system prompts, and
+Problem Reporter crash dialogs are floated in place so utility windows stay in
+the workspace where they were invoked instead of hitting the empty-workspace
+catch-all.
 
 The final empty-workspace catch-all applies only to tiled windows. Windows
 AeroSpace recognizes as dialogs are floating by default, so they remain beside
@@ -92,28 +90,18 @@ the application that opened them instead of being moved to another workspace.
 
 PiP handling is centralized in `~/.local/bin/aerospace-pip-guardian`. Its automatic workspace-change mode moves AeroSpace-managed Helium `Picture-in-picture` windows to the focused workspace and unhides hidden Brave-owned YouTube PWA PiP windows. Press `ctrl-alt-p` to run the stronger recovery mode, which also recreates stale Helium native PiP windows by toggling the Google PiP extension.
 
-The ChatGPT rule also runs `~/.local/bin/aerospace-sticky-pet`. The helper uses
-the custom CLI to apply `layout sticky` to floating ChatGPT windows, but exits
-without doing anything when the released server is active. This keeps the main
-config usable by both builds.
+The main ChatGPT window stays assigned to workspace `C`. AeroSpace
+`0.21.0-Beta` and later recognizes the always-on-top `com.openai.codex` Pet as
+an unmanaged popup, so it remains stable across workspace changes without a
+sticky-window rule or helper.
 
-## ChatGPT Pet Workaround Maintenance
+## ChatGPT Pet Maintenance
 
-This is a temporary workaround built from AeroSpace PR #2083; routine
-AeroSpace updates do not update or replace `~/Applications/AeroSpace
-Sticky.app`.
-
-- After updating AeroSpace, check whether the released version now supports
-  `layout sticky`. If it does, test the Pet with the release before removing
-  the custom app, LaunchAgent, helper, or F8 preference.
-- After updating ChatGPT, confirm the Pet still stays visible while changing
-  workspaces. The helper currently identifies it as a floating
-  `com.openai.codex` window titled `ChatGPT`; an app rename or window redesign
-  may require updating that match.
-- If flickering returns, first check whether the sticky build is running and
-  whether `aerospace-sticky-pet` still finds the Pet. The released AeroSpace
-  app remains available at `/Applications/AeroSpace.app` for comparison and
-  rollback.
+- Keep AeroSpace at `0.21.0-Beta` or later for the built-in Codex Pet popup
+  detection.
+- After updating ChatGPT, confirm the Pet remains visible and stable while
+  changing workspaces. If flickering returns, use `aerospace debug-windows` to
+  verify that the Pet is classified as a popup rather than a managed window.
 
 ## Gotchas
 
@@ -122,9 +110,9 @@ Sticky.app`.
 - **YouTube PWA PiP can vanish**: The `YouTube` app is a Brave app-mode wrapper (`com.brave.Browser.app...`), but its PiP window is owned by the parent `Brave Browser` process. If PiP disappears, check whether `Brave Browser` is hidden while `YouTube` is visible. `aerospace-pip-guardian auto` usually recovers this; use `ctrl-alt-p` for manual recovery.
 - **Zero gaps**: `[gaps]` section has all values at 0
 - **Mouse follows monitor**: When focus changes monitors, mouse moves to center
-- **No sticky windows**: Feature not yet supported (issue #2)
-- **Sticky is custom-build only**: the local PR #2083 build supports it; the
-  released rollback does not.
+- **No generic sticky windows**: Feature not yet supported (issue #2). The
+  Codex Pet does not require it because AeroSpace recognizes the Pet as an
+  unmanaged popup.
 - **Reserved bindings**: `alt-r` and `alt-x` are commented out
 
 ## Adding New App Assignment

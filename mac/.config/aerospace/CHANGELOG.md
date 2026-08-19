@@ -1,5 +1,17 @@
 # Aerospace Configuration Changelog
 
+## 2026-08-17
+- Upgraded the official AeroSpace app from `0.20.3-Beta` to `0.21.3-Beta`.
+- Removed the custom PR #2083 `AeroSpace Sticky.app`, its LaunchAgent, the
+  sticky Pet helper, and the custom client selector.
+- Restored AeroSpace's supported `start-at-login` registration and updated the
+  F8 process toggle to launch only `/Applications/AeroSpace.app`.
+- Removed the ChatGPT sticky command. AeroSpace `0.21.0-Beta` and later treats
+  the always-on-top Codex Pet as an unmanaged popup, preventing workspace
+  flicker without generic sticky-window support.
+- Fixed Helium PiP following and stale-window recovery after its window title
+  changed capitalization from `Picture-in-picture` to `Picture-in-Picture`.
+
 ## 2026-08-03
 - Migrated to `config-version = 2` and explicitly listed persistent workspaces
   to preserve the former v1 binding-inferred lifecycle.
