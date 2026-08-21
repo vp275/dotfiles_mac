@@ -1,6 +1,6 @@
 # Custom Shortcut Reference
 
-Last audited against live settings: 2026-08-18
+Last audited against live settings: 2026-08-19
 
 ## Purpose
 
@@ -10,6 +10,7 @@ now. Use the detailed setup guides for implementation history, database fields,
 backup procedures, and troubleshooting:
 
 - [Logitech Options+ and Spokenly setup](logitech-options-spokenly.md)
+- [MX Master 3S reconstruction manifest](logitech-mx-master-3s-shortcuts.json)
 - [BetterTouchTool gesture setup](btt/README.md)
 - [Spokenly transcription profile](transcription/spokenly/README.md)
 - [Ducky One 2 macOS setup](ducky-one-2-setup.md)
@@ -36,19 +37,20 @@ all current profiles.
 The Logitech profile displayed as `ChatGPT` targets Codex bundle ID
 `com.openai.codex`.
 
-| Profile | Auxiliary/thumb `c195` | Wheel click `c82` | Back `c83` | Forward `c86` | Thumb wheel left | Thumb wheel right |
+| Profile | Auxiliary/thumb `c195` | Wheel click `c82` | Back `c83` | Forward `c86` | Thumb wheel up / left | Thumb wheel down / right |
 | --- | --- | --- | --- | --- | --- | --- |
 | Desktop/default | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | Native horizontal scroll | Native horizontal scroll |
-| Codex, shown as ChatGPT | Logitech Smart Action `Spokenly Hands-Free` | Return | `Ctrl+Tab` | `Cmd+K`, open search | `Cmd+Delete` | `Shift+Return` |
-| Claude | Logitech Smart Action `Spokenly Hands-Free` | Return | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Warp | Logitech Smart Action `Spokenly Hands-Free` | Enter | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Ghostty | Logitech Smart Action `Spokenly Hands-Free` | Enter | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Safari | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Google Chrome | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Brave Browser | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Firefox | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Helium | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
-| Sioyek | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Right Arrow | Left Arrow | `-`, zoom out | `=`, zoom in |
+| Alacritty (`org.alacritty`) | Logitech Smart Action `Spokenly Hands-Free` | Return | `Ctrl+U` | `Ctrl+Tab`, next tab | `Ctrl+Option+Shift+Tab` (raw) | `Ctrl+Option+Tab` (raw) |
+| Codex, shown as ChatGPT (`com.openai.codex`) | Logitech Smart Action `Spokenly Hands-Free` | Return | `Cmd+Delete` | `Shift+Return` | `Ctrl+Tab` | `Cmd+K`, open search |
+| Conductor (`com.conductor.app`) | Logitech Smart Action `Spokenly Hands-Free` | Return | `Cmd+Delete` | `Shift+Return` | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Claude (`com.anthropic.claudefordesktop`) | Logitech Smart Action `Spokenly Hands-Free` | Enter | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Ghostty (`com.mitchellh.ghostty`) | Logitech Smart Action `Spokenly Hands-Free` | Enter | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Safari (`com.apple.Safari`) | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Google Chrome (`com.google.Chrome`) | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Brave Browser (`com.brave.Browser`) | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Firefox (`org.mozilla.firefox`) | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Shift+Tab` | `Ctrl+Tab` |
+| Helium (`net.imput.helium`) | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Native Back | Native Forward | `Ctrl+Tab` | `Ctrl+Shift+Tab` |
+| Sioyek (`info.sioyek.sioyek`) | Logitech Smart Action `Spokenly Hands-Free` | Middle click | Right Arrow | Left Arrow | `-`, zoom out | `=`, zoom in |
 
 ## BetterTouchTool
 
@@ -85,7 +87,6 @@ showing `allowedTerminal=true` and one `Fn tap triggered Ctrl+B` entry.
 | --- | --- |
 | 3-finger swipe right | Open BTT's Application Switcher |
 | 3-finger swipe left | `Cmd+Delete`, delete to the beginning of the line |
-| 3-finger tap | Open `Spokenly Toggle.app`, which calls `spokenly://toggle` for hands-free dictation |
 | 4-finger tap | Return |
 
 The 3-finger click trigger is disabled and reserved for future use.
@@ -96,7 +97,6 @@ The 3-finger click trigger is disabled and reserved for future use.
 | --- | --- |
 | 1-finger tap | Left click at the pointer |
 | 1-finger tap right | Right click at the pointer |
-| TipTap Left, 1 Finger Fix | Open `Spokenly Toggle.app`, which calls `spokenly://toggle` for hands-free dictation |
 | 2-finger swipe right | Open BTT's Application Switcher |
 | 3-finger tap | Middle click at the pointer |
 
@@ -112,48 +112,32 @@ Application-specific triggers override matching global gestures.
 | Codex | Normal-mouse horizontal scroll right | Toggle the sidebar between `By project` and `In one list` through the direct helper |
 | YouTube Brave app | `Cmd+Shift+C` | Open the application menu and run its native Copy URL command |
 
-### Current Spokenly adapters
+### Spokenly keyboard shortcut
 
-| Input | Owner and action | Result |
-| --- | --- | --- |
-| Trackpad 3-finger tap | BTT trigger `CA4B9E78-76FB-4764-9301-A9937EE84D12` | Open the background helper at `~/Applications/Spokenly Toggle.app`, which calls `spokenly://toggle` |
-| MX Master auxiliary/thumb button | Logitech Smart Action `Spokenly Hands-Free`, ID `d18fe790-d754-4fbc-8e82-0e5df78bda9e` | Open the same background helper and toggle Spokenly |
-| Magic Mouse TipTap Left, 1 Finger Fix | BTT trigger `497F16E1-1725-4D6E-BD16-B8F88259EF2F` | Open the same background helper and toggle Spokenly |
+| Input | Result |
+| --- | --- |
+| MacBook physical Right Option | Activates Spokenly's Default Mode directly |
+| Ducky physical right GUI, immediately right of right Alt | Emits Right Option and activates the same Default Mode directly |
 
-Standalone Right Option is not a Spokenly adapter. It remains a native modifier
-in keyboard chords, and no repository-level standalone Right Option mechanism
-is configured.
+The MX Master auxiliary/thumb button uses Logitech's `Spokenly Hands-Free`
+Smart Action to open `Spokenly Toggle.app`, which calls `spokenly://toggle`.
+No BetterTouchTool, trackpad, or Magic Mouse route activates Spokenly.
 
-### Removed Logitech-to-BTT transcription experiments
-
-The former global F20 trigger
-`1F6581F7-5158-4562-96BC-4651E63C893D` was removed on 2026-08-01. BTT did not
-receive Logitech's generated F20 or Hyper chord. A second test using a modified
-middle-click and BTT high-level mouse recognition also failed to reach BTT.
-BTT's generic and dedicated modifier actions emitted synthetic events that
-Spokenly ignored. The later `Ctrl+Shift+B` BTT adapter also failed because the
-Logitech thumb-button event never reached BTT. Those routes and their BTT
-triggers are removed. The current adapter is a native Logitech Device-triggered
-Smart Action and does not use a generated keyboard shortcut.
-
-`Ctrl+B` remains an active Codex BTT trigger, but the current Logitech Codex
-profile does not emit `Ctrl+B`. The live Logitech thumb wheel currently emits
-`Cmd+Delete` to the left and `Shift+Return` to the right.
+The complete machine-readable profile inventory, including Logitech card
+payloads and thumb-wheel directions, is in the [MX Master 3S reconstruction
+manifest](logitech-mx-master-3s-shortcuts.json).
 
 ## Spokenly
 
-Spokenly `2.27.16` (`538`) uses MacBook Fn with Push-to-talk activation. The
-live preference serializes it as `rawFlags: 8388608`,
-`activationMode: "pushToTalk"`, and `modeMac: "autoInsert"`.
+Spokenly `2.27.16` (`538`) uses its direct Right Option shortcut with
+automatic activation. The live preference serializes it as `rawFlags: 64`,
+`activationMode: "automatic"`, and `modeMac: "autoInsert"`.
 
 | Input | Result | Origin |
 | --- | --- | --- |
-| MacBook Fn held while speaking | Push-to-talk; release stops recording | Direct Spokenly shortcut |
-| MX Master auxiliary/thumb button | Open the same helper and toggle Spokenly | Logitech Smart Action |
-
-The three hands-free inputs converge on the same background helper. MacBook Fn
-remains a separate direct push-to-talk control. Standalone Right Option does not
-toggle Spokenly.
+| MacBook physical Right Option | Activates the Default Mode | Direct Spokenly shortcut |
+| Ducky physical right GUI, immediately right of right Alt | Emits Right Option and activates the Default Mode | Native Ducky modifier mapping, then the direct Spokenly shortcut |
+| MX Master auxiliary/thumb button | Opens the helper and toggles Spokenly | Logitech Smart Action |
 
 See the [Spokenly input profile](transcription/spokenly/README.md) for live
 settings, device compatibility, automation hooks, and verification.
@@ -161,8 +145,38 @@ settings, device compatibility, automation hooks, and verification.
 ## Ducky modifier mapping
 
 The Ducky One 2 Command, Option, and Caps mappings are owned by native macOS in
-`com.apple.keyboard.modifiermapping.1241-661-0`. The repository contains no
-standalone Right Option rule.
+`com.apple.keyboard.modifiermapping.1241-661-0`. Physical right Alt remains
+Right Command, while physical right GUI emits Right Option.
+
+## Herdr
+
+The live sources are `mac/.config/herdr/config.toml` and
+`mac/.config/alacritty/alacritty.toml`. Herdr's prefix remains `Ctrl+B`, and
+the prefix alternatives remain available. Alacritty forwards the Command
+chords with `ReceiveChar`; the workspace shortcuts depend on Option-as-Alt.
+
+| Shortcut | Result |
+| --- | --- |
+| `Ctrl+B`, then `n` / `p` | Next / previous Herdr tab |
+| `Cmd+1` through `Cmd+9` | Switch to Herdr tabs 1 through 9 |
+| `Ctrl+Option+1` through `Ctrl+Option+9` | Focus agents 1 through 9 |
+| `Ctrl+Tab` / `Ctrl+Shift+Tab` | Next / previous Herdr workspace; Ctrl+Tab is also the MX Master Forward-button mapping in Alacritty |
+| `Ctrl+1` through `Ctrl+9` | Switch directly to workspaces 1 through 9 |
+| `Cmd+T` | Open a new Herdr tab immediately with a generated name |
+| `Cmd+Shift+T` | Rename the focused Herdr tab |
+| `Cmd+W` | Close the focused Herdr pane, not the tab |
+| `Cmd+D` / `Cmd+Shift+D` | Split vertically / horizontally |
+| `Cmd+Z` | Toggle zoom for the focused Herdr pane |
+| `Cmd+Shift+H` / `Cmd+Shift+J` / `Cmd+Shift+K` / `Cmd+Shift+L` | Focus the pane left / down / up / right |
+| `Cmd+P` | Open the Herdr Goto navigator |
+
+The MX Master thumb wheel still emits the raw Ctrl+Option+Shift+Tab and
+Ctrl+Option+Tab chords in Alacritty, but Herdr has no custom action for those
+thumb-wheel chords.
+
+Stock Alacritty/winit retains the native `Hide Alacritty` Cmd+H menu action;
+Cmd+Shift+H is the Herdr pane-left shortcut. Cmd+K remains Alacritty's native
+Clear History action.
 
 ## Maintenance
 
