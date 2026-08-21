@@ -3,12 +3,37 @@ onboarding = false
 [theme]
 name = "tokyo-night"
 
+auto_switch = false
 [keys]
 prefix = "ctrl+b"
+focus_agent = "ctrl+alt+1..9"
+next_tab = ["prefix+n"]
+previous_tab = ["prefix+p"]
+switch_tab = ["prefix+1..9", "cmd+1..9"]
+goto = ["prefix+g", "cmd+p"]
+focus_pane_left = ["prefix+h", "cmd+shift+h"]
+focus_pane_down = ["prefix+j", "cmd+shift+j"]
+focus_pane_up = ["prefix+k", "cmd+shift+k"]
+focus_pane_right = ["prefix+l", "cmd+shift+l"]
+new_tab = ["prefix+c", "cmd+t"]
+rename_tab = ["prefix+shift+t", "cmd+shift+t"]
+zoom = ["prefix+z", "cmd+z"]
+close_pane = ["prefix+x", "cmd+w"]
+split_vertical = ["prefix+v", "cmd+d"]
+split_horizontal = ["prefix+minus", "cmd+shift+d"]
+switch_workspace = "ctrl+1..9"
+next_workspace = "ctrl+tab"
+previous_workspace = "ctrl+shift+tab"
 
 [ui]
 agent_panel_sort = "spaces"
+prompt_new_tab_name = false
 
 show_agent_labels_on_pane_borders = true
+
 [ui.toast]
 delivery = "system"
+
+[ui.sound]
+enabled = true
+done_path = "/Users/vp/.config/opencode/sounds/conductor-chime.mp3"

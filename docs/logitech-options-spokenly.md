@@ -1,6 +1,6 @@
 # Logitech Options+ and Spokenly Setup
 
-Last audited: 2026-08-18
+Last audited: 2026-08-19
 
 ## Goal
 
@@ -11,7 +11,8 @@ The important split:
 
 - Chat and terminal-like apps, including Codex: wheel click sends `Enter`.
 - Browsers: wheel click stays a real middle click.
-- The auxiliary/thumb button opens `Spokenly Toggle.app` in every profile.
+- The auxiliary/thumb button opens `Spokenly Toggle.app` in every restored
+  profile, including Desktop/default.
 
 ## Source of Truth
 
@@ -23,6 +24,12 @@ Logitech Options+ stores its profile state in:
 
 The real settings are stored as one JSON blob in SQLite table `data`, column
 `file`.
+
+The companion Smart Action definition is stored in:
+
+```text
+~/Library/Application Support/LogiOptionsPlus/macros.db
+```
 
 ## MX Master 3S Slot IDs
 
@@ -37,24 +44,30 @@ Useful slots:
 | Slot | Physical control | Notes |
 | --- | --- | --- |
 | `mx-master-3s-2b034_c82` | Wheel click / middle button | `Enter` in terminal-like apps and Codex, `MB3` in browsers. |
-| `mx-master-3s-2b034_c83` | Back button | Native Back in browsers/default; `Ctrl+Tab` in Codex. |
-| `mx-master-3s-2b034_c86` | Forward button | Native Forward in browsers/default; `Cmd+K` in Codex. |
-| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Smart Action `Spokenly Hands-Free` in every current Logitech profile. It opens a background helper that calls `spokenly://toggle`. |
+| `mx-master-3s-2b034_c83` | Back button | Native Back in browsers/default; `Cmd+Delete` in Codex. |
+| `mx-master-3s-2b034_c86` | Forward button | Native Forward in browsers/default; `Shift+Return` in Codex. |
+| `mx-master-3s-2b034_c195` | Aux/thumb-style button | Smart Action `Spokenly Hands-Free`, which opens `Spokenly Toggle.app`. |
 | `mx-master-3s-2b034_c196` | Gesture/top button | App navigation gesture card. |
+
+The documented HID key codes and modifier arrays are preserved in the
+[machine-readable MX Master 3S manifest](logitech-mx-master-3s-shortcuts.json).
+The manifest also records the exact Smart Action card, helper path, profile IDs,
+application IDs, and both thumb-wheel directions.
 
 ## Current Logitech Profile Benchmark
 
 ### Full Profile Snapshot
 
-Generated from the live Logitech Options+ database and rechecked on 2026-08-02.
+Generated from the live Logitech Options+ database and rechecked on 2026-08-19.
 
 | App/profile | Bundle id | Thumb button `c195` | Wheel click `c82` | Back `c83` | Forward `c86` |
 | --- | --- | --- | --- | --- | --- |
 | Desktop/default | global fallback | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
-| Codex | `com.openai.codex` | Smart Action `Spokenly Hands-Free` | `Enter` | `Ctrl+Tab` | `Cmd+K` |
+| Codex | `com.openai.codex` | Smart Action `Spokenly Hands-Free` | `Enter` | `Cmd+Delete` | `Shift+Return` |
+| Conductor | `com.conductor.app` | Smart Action `Spokenly Hands-Free` | `Enter` | `Cmd+Delete` | `Shift+Return` |
 | Claude | `com.anthropic.claudefordesktop` | Smart Action `Spokenly Hands-Free` | `Enter` | Native Back | Native Forward |
-| Warp | `dev.warp.Warp-Stable` | Smart Action `Spokenly Hands-Free` | `Enter` | Native Back | Native Forward |
 | Ghostty | `com.mitchellh.ghostty` | Smart Action `Spokenly Hands-Free` | `Enter` | Native Back | Native Forward |
+| Alacritty | `org.alacritty` | Smart Action `Spokenly Hands-Free` | `Enter` | `Ctrl+U` | `Ctrl+Tab` |
 | Safari | `com.apple.Safari` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
 | Google Chrome | `com.google.Chrome` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
 | Brave Browser | `com.brave.Browser` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
@@ -62,17 +75,31 @@ Generated from the live Logitech Options+ database and rechecked on 2026-08-02.
 | Helium | `net.imput.helium` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Native Back | Native Forward |
 | Sioyek | `info.sioyek.sioyek` | Smart Action `Spokenly Hands-Free` | Real middle click: `MB3` | Right Arrow | Left Arrow |
 
-Every current profile assigns the thumb button directly to the Spokenly Smart
-Action. This avoids profile inheritance gaps.
+### Alacritty Herdr Navigation
+
+The Alacritty application profile targets bundle ID `org.alacritty` and uses
+explicit keyboard shortcuts:
+
+| Physical control | Assignment |
+| --- | --- |
+| Back button | `Ctrl+U` |
+| Forward button | `Ctrl+Tab`, next workspace |
+| Thumb wheel up | `Ctrl+Option+Shift+Tab` (raw; no custom Herdr workspace action) |
+| Thumb wheel down | `Ctrl+Option+Tab` (raw; no custom Herdr workspace action) |
+
+Herdr maps the Forward-button Ctrl+Tab chord to next workspace while retaining
+the `Ctrl+B`, then `n`/`p` tab navigation sequences. The thumb-wheel chords have
+no custom Herdr workspace action.
 
 ### Wheel Click
 
 | App/profile | Bundle id | Wheel click |
 | --- | --- | --- |
 | Codex | `com.openai.codex` | `Enter` key |
+| Conductor | `com.conductor.app` | `Enter` key |
 | Claude | `com.anthropic.claudefordesktop` | `Enter` key |
-| Warp | `dev.warp.Warp-Stable` | `Enter` key |
 | Ghostty | `com.mitchellh.ghostty` | `Enter` key |
+| Alacritty | `org.alacritty` | `Enter` key |
 | Desktop/default | global fallback | Real middle click: `MB3` |
 | Safari | `com.apple.Safari` | Real middle click: `MB3` |
 | Google Chrome | `com.google.Chrome` | Real middle click: `MB3` |
@@ -104,27 +131,32 @@ Profiles currently matching that browser/default shape:
 - Firefox
 - Helium
 - Claude
-- Warp
 - Ghostty
 
-Every current profile sets the thumb button (`c195`) to a macro reference for the
-Logitech Smart Action `Spokenly Hands-Free`, ID
-`d18fe790-d754-4fbc-8e82-0e5df78bda9e`. The Smart Action opens the background
-helper at `~/Applications/Spokenly Toggle.app`; the helper calls Spokenly's
-documented `spokenly://toggle` deeplink.
+Every restored MX Master profile assigns the thumb button (`c195`) to the
+Logitech Smart Action `Spokenly Hands-Free`, which opens
+`~/Applications/Spokenly Toggle.app`.
 
-Codex currently has a custom four-button layout:
+The Smart Action card identifier is
+`d18fe790-d754-4fbc-8e82-0e5df78bda9e`; its macro payload opens
+`/Users/vp/Applications/Spokenly Toggle.app` with the `OPEN_FILE_FOLDER`
+action. The twelve profile IDs, application IDs, application paths, HID key
+codes, and modifier arrays are preserved in the [reconstruction manifest](logitech-mx-master-3s-shortcuts.json).
+
+Codex currently has a custom layout:
 
 | Slot | Current Codex assignment |
 | --- | --- |
 | `c195` | Smart Action `Spokenly Hands-Free`; opens `Spokenly Toggle.app`, then `spokenly://toggle` |
 | `c82` | `Enter` / `Return` |
-| `c83` | `Ctrl+Tab` (`code: 43`, modifiers `[224]`) |
-| `c86` | `Cmd+K` (`code: 14`, modifiers `[227]`) |
+| `c83` | `Cmd+Delete` (`code: 42`, modifiers `[227]`) |
+| `c86` | `Shift+Return` (`code: 40`, modifiers `[225]`) |
+| Thumb wheel left | `Ctrl+Tab` (`code: 43`, modifiers `[224]`) |
+| Thumb wheel right | `Cmd+K` (`code: 14`, modifiers `[227]`) |
 
 Treat Codex side buttons separately from browser side buttons.
 
-### Codex Thumb Wheel And Sidebar Toggle
+### Codex ChatGPT Profile
 
 The Logitech Options+ application profile is displayed as `ChatGPT`, but it
 targets the Codex application:
@@ -138,29 +170,28 @@ The current known-good assignments are:
 
 | Physical control | Assignment |
 | --- | --- |
-| Forward button | `Cmd+K` (`code: 14`, modifiers `[227]`) |
-| Thumb wheel up | `Ctrl+B` (`code: 5`, modifiers `[224]`) |
-| Thumb wheel down | `Cmd+Delete` (`code: 42`, modifiers `[227]`) |
+| Auxiliary/thumb button | Logitech Smart Action `Spokenly Hands-Free` |
+| Wheel click | `Return` (`code: 40`) |
+| Back button | `Cmd+Delete` (`code: 42`, modifiers `[227]`) |
+| Forward button | `Shift+Return` (`code: 40`, modifiers `[225]`) |
+| Thumb wheel left | `Ctrl+Tab` (`code: 43`, modifiers `[224]`) |
+| Thumb wheel right | `Cmd+K` (`code: 14`, modifiers `[227]`) |
 
-The thumb-wheel-up shortcut is consumed by a Codex-specific BetterTouchTool
-keyboard trigger. BTT then runs:
-
-```text
-~/Library/Application Support/BetterTouchTool/CustomScripts/codex-sidebar-toggle-debounced
-```
-
-That wrapper toggles the Codex sidebar between `By project` and `In one list`
-through the compiled `codex-sidebar-toggle` helper. It suppresses repeated
-invocations for `1.5` seconds because one physical thumb-wheel movement can
-produce multiple `Ctrl+B` events. Before the debounce wrapper was added, the
-sidebar could toggle twice and finish in its original state, which looked like
-the shortcut had not run.
+The Codex-specific BetterTouchTool `Ctrl+B` sidebar trigger remains available,
+but the restored Logitech profile does not assign `Ctrl+B` to a mouse control.
 
 The Logitech settings database was backed up before repairing these
 assignments:
 
 ```text
 ~/Library/Application Support/LogiOptionsPlus/settings.db.backup-codex-20260728
+```
+
+The current known-good recovery snapshot used for this audit is:
+
+```text
+~/Library/Application Support/LogiOptionsPlus/settings.db.recovered-full-with-global-20260819-144026
+SHA-256: a578b4ffd9a5e5cbcea24e4828eb582109ec835309b4acce5e965e4a3060ffe9
 ```
 
 See the related BTT guide for trigger details and troubleshooting:
@@ -174,22 +205,13 @@ documented separately:
 
 [BetterTouchTool gesture setup](btt/README.md)
 
-## Input Ownership Lessons
+## Input Ownership
 
-Do not route the Logitech auxiliary/thumb button through generated keyboard
-chords or BetterTouchTool. Physical tests showed that Logitech-generated F20,
-Hyper, `Ctrl+Shift+B`, and modified mouse clicks did not enter BTT's trigger
-pipeline reliably.
-
-Keep each input with one owner:
-
-- Logitech Options+ owns the MX Master auxiliary/thumb button and opens
-  `Spokenly Toggle.app`.
-- BTT owns the trackpad and Magic Mouse Spokenly gestures.
 - Browser wheel click remains native `MB3`.
 - Chat and terminal wheel click sends `Enter` directly from Logitech Options+.
-- BTT-generated Right Option is not a Spokenly-compatible replacement for the
-  helper route.
+- The MX Master auxiliary/thumb button uses Logitech's `Spokenly Hands-Free`
+  Smart Action.
+- BetterTouchTool does not own the MX Master Spokenly route.
 
 ### Codex And Browser Focus
 
@@ -224,6 +246,27 @@ In this setup, the default profile should keep:
 - Forward: `OSX_GESTURE_FORWARD`
 
 ## Audit Commands
+
+### Read-only manifest audit
+
+The dependency-free audit utility opens `settings.db` with SQLite URI
+`mode=ro`. It reports missing, additional, or mismatched profiles and controls,
+and exits nonzero for drift. It never repairs or writes Logitech state.
+
+```bash
+python3 scripts/audit-logitech-shortcuts.py
+```
+
+Override the source paths when auditing a recovery copy:
+
+```bash
+python3 scripts/audit-logitech-shortcuts.py \
+  --manifest docs/logitech-mx-master-3s-shortcuts.json \
+  --database "$HOME/Library/Application Support/LogiOptionsPlus/settings.db"
+```
+
+See the [MX Master 3S reconstruction manifest](logitech-mx-master-3s-shortcuts.json)
+for the versioned profile inventory and exact relevant Logitech card payloads.
 
 ### Logitech Profile Summary
 
