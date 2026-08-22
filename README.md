@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/tmux-1BB91F?logo=tmux&logoColor=white" alt="tmux">
   <img src="https://img.shields.io/badge/Ghostty-161616?logo=ghost&logoColor=white" alt="Ghostty">
   <br>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=vp275.dotfiles" alt="Visitors">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=vedntp.dotfiles" alt="Visitors">
 </p>
 
 ---
@@ -21,7 +21,7 @@
 
 ```bash
 # Clone
-git clone git@github.com:vp275/dotfiles.git ~/.dotfiles
+git clone git@github.com:vedntp/dotfiles.git ~/.dotfiles
 
 # Deploy
 cd ~/.dotfiles
